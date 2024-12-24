@@ -34,7 +34,7 @@ class AppTest extends Command
         $userFileUrl = 'https://iart-user-upload-file.oss-cn-hangzhou.aliyuncs.com/luna/userFile/eaa49139237d4c4a89b06bd43dc187b0.webp';
 
         // 无人脸
-        $userFileUrl = 'https://51meibainian.oss-cn-beijing.aliyuncs.com/img604swipe0.jpeg';
+//        $userFileUrl = 'https://51meibainian.oss-cn-beijing.aliyuncs.com/img604swipe0.jpeg';
 
         try {
             $res = (new FaceSwapService())->swapFaces($targetFileUrl, $userFileUrl);

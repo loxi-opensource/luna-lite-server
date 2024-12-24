@@ -224,7 +224,7 @@ class FaceSwapService
         $response = Http::withHeaders($options['headers'])->$method($url, $data);
 
         if ($response->successful()) {
-            Log::debug("商汤换脸请求成功: {$method} {$endpoint}", [
+            Log::debug("商汤换脸请求响应: {$method} {$endpoint}", [
                 'request' => compact('data'),
                 'response' => $response->json()
             ]);
