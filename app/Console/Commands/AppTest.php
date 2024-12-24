@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Common\Service\FaceSwap\FaceSwapService;
 use Illuminate\Console\Command;
 
 class AppTest extends Command
@@ -25,7 +26,10 @@ class AppTest extends Command
      */
     public function handle()
     {
-        dd(base_path(), storage_path('/'));
+        $targetFileUrl = 'https://iart-user-upload-file.oss-cn-hangzhou.aliyuncs.com/libraries/%E4%B8%87%E4%BA%8B%E5%85%B4%E9%BE%99/%E5%8F%A4%E9%A3%8E_%E5%A5%B3/cb54a0a0ea89a4692eb57a4c4eba1a02.webp';
+        $userFileUrl = 'https://iart-user-upload-file.oss-cn-hangzhou.aliyuncs.com/luna/userFile/eaa49139237d4c4a89b06bd43dc187b0.webp';
+        $res = (new FaceSwapService())->swapFaces($targetFileUrl, $userFileUrl);
+        dd($res);
     }
 
 }

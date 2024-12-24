@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "alibabacloud/client": "^1.5",
+        "firebase/php-jwt": "^6.10",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "phpoffice/phpspreadsheet": "^3.3",
