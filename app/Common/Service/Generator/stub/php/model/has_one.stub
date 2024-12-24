@@ -1,0 +1,10 @@
+
+    /**
+     * @notes 关联{RELATION_NAME}
+     * @author {AUTHOR}
+     * @date {DATE}
+     */
+    public function {RELATION_NAME}()
+    {
+        return $this->hasOne({RELATION_MODEL}::class, '{FOREIGN_KEY}', '{LOCAL_KEY}');
+    }
