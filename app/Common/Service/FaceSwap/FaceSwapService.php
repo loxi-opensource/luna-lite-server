@@ -199,7 +199,7 @@ class FaceSwapService
      */
     private function makeRequest(string $method, string $endpoint, ?array $data = null): ?array
     {
-        Log::debug("Making request to {$endpoint}", ['method' => $method, 'data' => $data]);
+        Log::debug("商汤换脸发起请求: {$method} {$endpoint}", compact('data'));
         $token = $this->generateJwtToken();
 
         if (!$token) {
@@ -220,11 +220,17 @@ class FaceSwapService
         $response = Http::withHeaders($options['headers'])->$method($url, $data);
 
         if ($response->successful()) {
-            Log::debug("Request successful", ['response' => $response->json()]);
+            Log::debug("商汤换脸请求成功: {$method} {$endpoint}", [
+                'request' => compact('data'),
+                'response' => $response->json()
+            ]);
             return $response->json();
         } else {
-            Log::error("Request failed", ['status_code' => $response->getStatusCode()]);
-            // Handle errors, log, return null, or throw exception
+            Log::error("商汤换脸请求失败: {$method} {$endpoint}", [
+                'request' => compact('data'),
+                'response' => $response->json(),
+                'status_code' => $response->status()
+            ]);
             return null;
         }
     }
