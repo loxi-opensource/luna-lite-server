@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class FaceSwapService
 {
-    private $baseUrl;
-    private $provider;
-    private $ak;
-    private $sk;
+    private string $baseUrl;
+    private string $provider;
+    private string $ak;
+    private string $sk;
 
     public function __construct()
     {
