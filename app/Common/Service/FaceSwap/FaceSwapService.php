@@ -59,9 +59,9 @@ class FaceSwapService
         $faces = [];
         foreach ($targetDetectData['faces'] as $index => $face) {
             $faces[] = [
-                'url' => $userImageUrl, // todo 是否可以不用提前检测用户图
+                'url' => $userImageUrl, // 用户图片URL。不需要提前检测人脸
                 'index' => 0, //  用户图片始终使用索引0，因为我们假设只有一张脸
-                'base_index' => $index,
+                'base_index' => $index, // 目标图片的脸索引
             ];
         }
 
@@ -130,6 +130,10 @@ class FaceSwapService
 
         while ($attempts < $maxAttempts) {
             $result = $this->makeRequest('GET', $endpoint . $taskId);
+
+            if (Arr::get($result, 'error')) {
+                throw new \Exception("换脸失败: " . json_encode(Arr::get($result, 'error')));
+            }
 
             $task = Arr::get($result, 'task');
             if ($task && Arr::get($task, 'state') == 1) {
