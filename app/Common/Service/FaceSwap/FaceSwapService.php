@@ -144,7 +144,7 @@ class FaceSwapService
             $attempts++;
         }
 
-        return null; // 轮询超时
+        throw new \Exception("轮询超时");
     }
 
     /**
