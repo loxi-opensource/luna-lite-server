@@ -7,10 +7,13 @@
     "require": {
         "php": "^8.2",
         "alibabacloud/client": "^1.5",
+        "aliyuncs/oss-sdk-php": "^2.7",
         "firebase/php-jwt": "^6.10",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "phpoffice/phpspreadsheet": "^3.3",
+        "qcloud/cos-sdk-v5": "^2.6",
+        "qiniu/php-sdk": "^7.14",
         "tencentcloud/sms": "^3.0",
         "w7corp/easywechat": "^6.15"
     },

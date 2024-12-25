@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\service\storage\Engine;
+namespace App\Common\Service\Storage\Engine;
 
 use Exception;
 use Qiniu\Auth;
@@ -9,8 +9,6 @@ use Qiniu\Storage\UploadManager;
 
 /**
  * 七牛云存储引擎
- * Class Qiniu
- * @package app\common\library\storage\engine
  */
 class Qiniu extends Server
 {

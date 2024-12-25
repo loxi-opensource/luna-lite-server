@@ -1,14 +1,12 @@
 <?php
 
-namespace app\common\service\storage\Engine;
+namespace App\Common\Service\Storage\Engine;
 
 use Exception;
 use Qcloud\Cos\Client;
 
 /**
  * 腾讯云存储引擎 (COS)
- * Class Qiniu
- * @package app\common\library\storage\engine
  */
 class Qcloud extends Server
 {

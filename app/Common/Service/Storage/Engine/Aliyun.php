@@ -1,14 +1,12 @@
 <?php
 
-namespace app\common\service\storage\Engine;
+namespace App\Common\Service\Storage\Engine;
 
 use OSS\Core\OssException;
 use OSS\OssClient;
 
 /**
  * 阿里云存储引擎 (OSS)
- * Class Qiniu
- * @package app\common\library\storage\engine
  */
 class Aliyun extends Server
 {
