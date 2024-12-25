@@ -37,11 +37,10 @@ class FaceSwapService
      *
      * @param string $targetImageUrl 目标图片URL
      * @param string $userImageUrl 用户图片URL
-     * @param string $modelId 模型ID (默认为'faceswap_v1')
      * @return array|null  返回生成的图片数据或 null 如果出现错误
      * @throws \Exception 如果出现错误
      */
-    public function swapFaces(string $targetImageUrl, string $userImageUrl, string $modelId = 'faceswap_v1'): ?array
+    public function swapFaces(string $targetImageUrl, string $userImageUrl): ?array
     {
         $detectResult = $this->detect($targetImageUrl);
 
@@ -65,7 +64,7 @@ class FaceSwapService
             ];
         }
 
-        $generateResult = $this->generateImage($modelId, $targetImageUrl, $faces);
+        $generateResult = $this->generateImage($targetImageUrl, $faces);
 
         if (!isset($generateResult['task_id'])) {
             throw new \Exception("Image generation failed: " . json_encode($generateResult));
@@ -78,16 +77,15 @@ class FaceSwapService
     /**
      * 作图接口
      *
-     * @param string $modelId 模型ID
-     * @param string $baseImageUrl 底图URL
+     * @param string $targetImageUrl 目标图片URL
      * @param array $faces 人脸列表
      * @return array|null
      */
-    public function generateImage(string $modelId, string $baseImageUrl, array $faces): ?array
+    public function generateImage(string $targetImageUrl, array $faces): ?array
     {
         $data = [
-            'model_id' => $modelId,
-            'base_img' => ['url' => $baseImageUrl],
+            'model_id' => 'faceswap_v1',
+            'base_img' => ['url' => $targetImageUrl],
             'faces' => $faces,
         ];
 
