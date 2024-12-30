@@ -49,7 +49,10 @@ class FaceSwapService
             throw new \Exception("Failed to retrieve detection results for target image.");
         }
 
-        list($originWidth, $originHeight) = (new ImageCropService($imageUrl))->getImageInfo($imageUrl);
+        // 获取原图尺寸
+        $s = new ImageCropService($imageUrl);
+        $originHeight = $s->getImageHeight();
+        $originWidth = $s->getImageWidth();
         $faceList = [];
         foreach ($detectData['faces'] as $face) {
             // 统一数据结构
