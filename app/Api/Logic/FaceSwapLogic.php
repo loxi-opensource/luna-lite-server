@@ -2,22 +2,12 @@
 
 namespace App\Api\Logic;
 
-use app\common\enum\QueueNameConst;
 use App\Common\Enum\User\AccountLogEnum;
-use app\common\model\luna\SwapTask;
-use app\common\model\swap_template\SwapTemplate;
-use app\common\model\swap_template\SwapTemplateCollectionRelation;
 use App\Common\Model\SwapRecord;
-use app\common\model\user\User;
+use App\Common\Model\User\User;
 use App\Common\Service\FaceSwap\FaceSwapService;
-use app\common\service\luna\LunaDrawService;
 use App\Common\Types\Swap\GenerateParams;
-use app\common\types\user_draft\Draft;
 use Illuminate\Support\Facades\DB;
-
-//use app\common\utils\LogUtils;
-//use think\facade\Db;
-//use think\facade\Log;
 
 class FaceSwapLogic extends DrawLogic
 {

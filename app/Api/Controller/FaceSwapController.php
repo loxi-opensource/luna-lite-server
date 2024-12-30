@@ -14,12 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
-//use app\common\model\luna\SwapTask;
-
-//use app\common\service\luna\LunaDrawService;
-
-//use app\common\types\user_draft\Draft;
-
 class FaceSwapController extends BaseApiController
 {
     // 生成图片
