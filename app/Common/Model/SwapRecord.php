@@ -60,4 +60,5 @@ class SwapRecord extends BaseModel
             set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
         );
     }
+
 }
