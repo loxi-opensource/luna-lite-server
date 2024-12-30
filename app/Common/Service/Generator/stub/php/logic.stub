@@ -65,9 +65,12 @@ class {UPPER_CAMEL_NAME}Logic extends BaseLogic
     {
         DB::beginTransaction();
         try {
-            {UPPER_CAMEL_NAME}::where('{PK}', $params['{PK}'])->update([
+
+            $model = {UPPER_CAMEL_NAME}::findOrFail($params['{PK}']);
+            $model->fill([
 {UPDATE_DATA}
             ]);
+            $model->save();
 
             DB::commit();
             return true;
