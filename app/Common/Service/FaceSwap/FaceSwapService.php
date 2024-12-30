@@ -3,11 +3,13 @@
 namespace App\Common\Service\FaceSwap;
 
 use App\Common\Service\Aliyun\ImageCropService;
+use App\Common\Types\Swap\GenerateParams;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class FaceSwapService
 {
@@ -69,15 +71,44 @@ class FaceSwapService
         return $faceList;
     }
 
+    public function swapFaces(GenerateParams $generateParams)
+    {
+        $params = $generateParams->toArray();
+        $targetImageUrl = $params['target_image'];
+        $userImageUrl = $params['user_image'];
+        $faceMapping = $params['face_mapping'];
+
+        $faces = [];
+        foreach ($faceMapping as $targetIndex => $userIndex) {
+            $targetIndex = intval(Str::replaceFirst('T#', '', $targetIndex));
+            $userIndex = intval(Str::replaceFirst('U#', '', $userIndex));
+            $faces[] = [
+                'url' => $userImageUrl, // 用户图片URL
+                'index' => $userIndex,  // 用户图片的脸索引
+                'base_index' => $targetIndex, // 目标图片的脸索引
+            ];
+        }
+
+        $generateResult = $this->generateImage($targetImageUrl, $faces);
+        if (!isset($generateResult['task_id'])) {
+            throw new \Exception("Image generation failed: " . json_encode($generateResult));
+        }
+
+        $generateTaskId = $generateResult['task_id'];
+
+        // 统一数据结构
+        return $this->pollForGenerateResult($generateTaskId);
+    }
+
     /**
-     * 执行换脸操作
+     * 简单换脸。只需提供图片URL
      *
      * @param string $targetImageUrl 目标图片URL
      * @param string $userImageUrl 用户图片URL
      * @return array|null  返回生成的图片数据或 null 如果出现错误
      * @throws \Exception 如果出现错误
      */
-    public function swapFaces(string $targetImageUrl, string $userImageUrl): ?array
+    private function swapSimple(string $targetImageUrl, string $userImageUrl): ?array
     {
         $detectResult = $this->detect($targetImageUrl);
 
@@ -118,7 +149,7 @@ class FaceSwapService
      * @param array $faces 人脸列表
      * @return array|null
      */
-    public function generateImage(string $targetImageUrl, array $faces): ?array
+    private function generateImage(string $targetImageUrl, array $faces): ?array
     {
         $data = [
             'model_id' => 'faceswap_v1',
@@ -211,7 +242,7 @@ class FaceSwapService
      * @param string $imageUrl 图片URL
      * @return array|null
      */
-    public function detect(string $imageUrl): ?array
+    private function detect(string $imageUrl): ?array
     {
         return $this->makeRequest('POST', '/detect', ['img_url' => $imageUrl]);
     }
@@ -222,7 +253,7 @@ class FaceSwapService
      * @param string $requestId 请求ID
      * @return array|null
      */
-    public function getDetectResult(string $requestId): ?array
+    private function getDetectResult(string $requestId): ?array
     {
         return $this->makeRequest('GET', "/detect/{$requestId}");
     }

@@ -7,12 +7,12 @@ use App\Common\Enum\FileEnum;
 use App\Common\Model\DigitalAvatar;
 use App\Common\Model\User\User;
 use App\Common\Service\Aliyun\ImageCropService;
-use App\Common\Service\Aliyun\ImageGreenCheckService;
 use App\Common\Service\FaceSwap\FaceSwapService;
 use App\Common\Service\UploadService;
+use App\Common\Types\Swap\GenerateParams;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 //use app\common\model\luna\SwapTask;
 
@@ -23,12 +23,19 @@ use Illuminate\Support\Str;
 class FaceSwapController extends BaseApiController
 {
     // 生成图片
-    function generate()
+    function generate(Request $request)
     {
-        $result = FaceSwapLogic::generate(
-            User::query()->findOrFail($this->getUserId()),
-            new Draft($this->request->post('draft')),
-        );
+        try {
+            $params = new GenerateParams(
+                $request->post('target_image'),
+                $request->post('user_image'),
+                $request->post('face_mapping')
+            );
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage());
+        }
+
+        $result = FaceSwapLogic::generate(User::query()->findOrFail($this->getUserId()), $params);
         if (!$result) {
             $errMsg = FaceSwapLogic::getError();
             return $this->fail($errMsg);

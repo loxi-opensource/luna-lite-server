@@ -18,11 +18,11 @@ class GenerateParams
     private string $userImage;
 
     /**
-     * @var FaceMappingList 人脸映射列表
+     * @var FaceMapping 人脸映射列表
      */
-    private FaceMappingList $faceMappingList;
+    private FaceMapping $faceMapping;
 
-    public function __construct(string $targetImage, string $userImage, array $faceMappingList)
+    public function __construct(string $targetImage, string $userImage, array $faceMapping)
     {
         $validator = Validator::make(
             [
@@ -47,7 +47,7 @@ class GenerateParams
 
         $this->targetImage = $targetImage;
         $this->userImage = $userImage;
-        $this->faceMappingList = FaceMappingList::fromArray($faceMappingList);
+        $this->faceMapping = new FaceMapping($faceMapping);
     }
 
     public function toArray(): array
@@ -55,7 +55,7 @@ class GenerateParams
         return [
             'target_image' => $this->targetImage,
             'user_image' => $this->userImage,
-            'face_mapping_list' => $this->faceMappingList->toArray(),
+            'face_mapping' => $this->faceMapping->toArray(),
         ];
     }
 

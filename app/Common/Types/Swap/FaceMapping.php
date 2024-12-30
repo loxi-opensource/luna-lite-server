@@ -2,6 +2,7 @@
 
 namespace App\Common\Types\Swap;
 
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class FaceMapping
@@ -33,11 +34,24 @@ class FaceMapping
                     "Invalid mapping key: {$targetId}. All keys must be strings."
                 );
             }
+            // 必须以T#开头
+            if (Str::startsWith($targetId, 'T#') === false) {
+                throw new InvalidArgumentException(
+                    "Invalid mapping key: {$targetId}. All keys must start with 'T#'."
+                );
+            }
 
             // 检查value是否为字符串
             if (!is_string($userId)) {
                 throw new InvalidArgumentException(
                     "Invalid mapping value: {$userId}. All values must be strings."
+                );
+            }
+
+            // 必须以U#开头
+            if (Str::startsWith($userId, 'U#') === false) {
+                throw new InvalidArgumentException(
+                    "Invalid mapping value: {$userId}. All values must start with 'U#'."
                 );
             }
 
