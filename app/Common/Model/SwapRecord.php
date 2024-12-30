@@ -16,6 +16,8 @@ namespace App\Common\Model;
 
 
 use App\Common\Model\BaseModel;
+use App\Common\Service\FileService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -35,5 +37,27 @@ class SwapRecord extends BaseModel
         return 'delete_time';
     }
 
-    
+    protected function targetImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => trim($value) ? FileService::getFileUrl($value) : '',
+            set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
+        );
+    }
+
+    protected function userImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => trim($value) ? FileService::getFileUrl($value) : '',
+            set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
+        );
+    }
+
+    protected function resultImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => trim($value) ? FileService::getFileUrl($value) : '',
+            set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
+        );
+    }
 }
