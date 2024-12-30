@@ -7,8 +7,10 @@ use App\Common\Enum\FileEnum;
 use App\Common\Model\DigitalAvatar;
 use App\Common\Model\User\User;
 use App\Common\Service\Aliyun\ImageCropService;
+use App\Common\Service\Aliyun\ImageGreenCheckService;
 use App\Common\Service\FaceSwap\FaceSwapService;
 use App\Common\Service\UploadService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -49,26 +51,34 @@ class FaceSwapController extends BaseApiController
                 throw new \Exception('请先配置阿里云OSS存储');
             }
 
-            // todo 图片安全检测
-
+            // 上传阿里云
             $ossResult = UploadService::image(0, $this->getUserId(), FileEnum::SOURCE_USER);
-            $imageUrl = $ossResult['uri'];
+            $imageUrl = Arr::get($ossResult, 'uri');
+
+            // 检查图片是否合规
+//            $isGreenImage = (new ImageGreenCheckService())->checkImage($imageUrl);
+//            if (!$isGreenImage) {
+//                return $this->fail('图片涉嫌违规，请重新上传');
+//            }
+
+            // 检测人脸
             $faceList = $faceSwapService->detectFace($imageUrl);
 
             // 创建数字分身
-            $image = new ImageCropService($imageUrl);
-
+            $cropService = new ImageCropService($imageUrl);
             foreach ($faceList as $face) {
                 $newRow = [
                     'user_id' => $this->getUserId(),
                     'user_image' => $imageUrl,
-                    'face_image' => $image->cropByRatio($face['boundingBoxLeft'], $face['boundingBoxTop'], $face['boundingBoxWidth'], $face['boundingBoxHeight']),
+                    'face_image' => $cropService->cropByRatio(
+                        $face['boundingBoxLeft'], $face['boundingBoxTop'],
+                        $face['boundingBoxWidth'], $face['boundingBoxHeight']),
                     'face_id' => $face['id'],
                 ];
                 DigitalAvatar::create($newRow);
             }
 
-            return $this->success('Upload success');
+            return $this->success('上传成功');
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }

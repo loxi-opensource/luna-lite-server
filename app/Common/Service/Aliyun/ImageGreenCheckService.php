@@ -25,6 +25,9 @@ class ImageGreenCheckService
         if (empty($systemConfig)) {
             $systemConfig = (new ImageCheckSettingLogic())->getConfig();
         }
+        if (!$systemConfig['region_id']) {
+            throw new \Exception("请先配置阿里云图片审核服务");
+        }
         $this->systemConfig = $systemConfig;
         $configData = [
             "accessKeyId" => $systemConfig['access_key'],
