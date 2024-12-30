@@ -35,5 +35,9 @@ class SwapTemplateGroup extends BaseModel
         return 'delete_time';
     }
 
-    
+    public function templates()
+    {
+        return $this->hasMany(SwapTemplate::class, 'group_id', 'id');
+    }
+
 }
