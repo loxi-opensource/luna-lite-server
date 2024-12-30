@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
 class FaceSwapController extends BaseApiController
 {
     // 生成图片
-    public function generate(Request $request)
+    public function createSwap(Request $request)
     {
         try {
             $params = new GenerateParams(
@@ -39,7 +39,7 @@ class FaceSwapController extends BaseApiController
     }
 
     // 上传用户图，制作数字分身。用户图有多少张人脸就创建多少个分身。
-    public function uploadImage(FaceSwapService $faceSwapService)
+    public function createAvatar(FaceSwapService $faceSwapService)
     {
         try {
             $storageType = Cache::get('STORAGE_DEFAULT', 'local');
@@ -74,7 +74,7 @@ class FaceSwapController extends BaseApiController
                 DigitalAvatar::create($newRow);
             }
 
-            return $this->success('上传成功');
+            return $this->success('success', $newRow);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
