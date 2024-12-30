@@ -7,15 +7,17 @@ use App\Common\Enum\User\AccountLogEnum;
 use app\common\model\luna\SwapTask;
 use app\common\model\swap_template\SwapTemplate;
 use app\common\model\swap_template\SwapTemplateCollectionRelation;
+use App\Common\Model\SwapRecord;
 use app\common\model\user\User;
 use App\Common\Service\FaceSwap\FaceSwapService;
 use app\common\service\luna\LunaDrawService;
-use App\Common\Types\Swap\FaceMapping;
 use App\Common\Types\Swap\GenerateParams;
 use app\common\types\user_draft\Draft;
-use app\common\utils\LogUtils;
-use think\facade\Db;
-use think\facade\Log;
+use Illuminate\Support\Facades\DB;
+
+//use app\common\utils\LogUtils;
+//use think\facade\Db;
+//use think\facade\Log;
 
 class FaceSwapLogic extends DrawLogic
 {
@@ -33,38 +35,39 @@ class FaceSwapLogic extends DrawLogic
 
         // 创建作图任务
         try {
-            $res = (new FaceSwapService())->swapFaces($params);
+            $resUrl = (new FaceSwapService())->swapFaces($params);
         } catch (\Exception $e) {
             self::setError($e->getMessage());
             return false;
         }
 
-        Db::startTrans();
+        // 保存图片到OSS
+        $resultImage = self::downloadImage($resUrl);
+        if (empty($resultImage)) {
+            self::setError('下载远程图片失败');
+            return false;
+        }
+
+        DB::beginTransaction();
         try {
             // 保存到数据库
-            $newTask = new SwapTask();
-            $newTask->user_id = $user->id;
-            $newTask->up_task_id = $res['messageId'];
-            $newTask->draw_number = $drawNumber;
-            $newTask->face_mapping = $faceMapping->toArray();
-            $newTask->user_draft = $draft->toArray();
-            $newTask->strategy_id = $draft->strategy_id;
-            $newTask->status = SwapTask::STATUS_PROCESSING;
-            $newTask->save();
+            $newRecord = new SwapRecord();
+            $newRecord->user_id = $user->id;
+            $newRecord->target_image = $params->getTargetImage();
+            $newRecord->user_image = $params->getUserImage();
+            $newRecord->result_image = $resultImage;
+            $newRecord->save();
 
             // 扣除余额
             self::drawBalanceHandle($user, $drawNumber, AccountLogEnum::DRAW_DEC_IMAGE);
 
-            //          // 生成失败, 返还用户余额
-            //                self::drawBalanceHandle($userId, $taskExist->draw_number, AccountLogEnum::DRAW_INC_DRAW_FAIL);
-            //
-            Db::commit();
+            DB::commit();
         } catch (\Exception $e) {
-            Db::rollback();
+            DB::rollBack();
             self::setError($e->getMessage());
             return false;
         }
 
-        return $res;
+        return $newRecord;
     }
 }

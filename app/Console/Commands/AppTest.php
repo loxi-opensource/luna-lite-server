@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Common\Model\DigitalAvatar;
-use App\Common\Service\ConfigService;
+use App\Api\Logic\FaceSwapLogic;
 use App\Common\Service\FaceSwap\FaceSwapService;
 use App\Common\Types\Swap\GenerateParams;
+use App\Common\Model\User\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 
 class AppTest extends Command
 {
@@ -41,7 +40,13 @@ class AppTest extends Command
             ],
         ];
         $genParams = new GenerateParams($params['target_image'], $params['user_image'], $params['face_mapping']);
-        $res = (new FaceSwapService())->swapFaces($genParams);
+//        $res = (new FaceSwapService())->swapFaces($genParams);
+        $res = FaceSwapLogic::generate(User::query()->find(1), $genParams);
+        if (!$res) {
+            $errMsg = FaceSwapLogic::getError();
+            $this->error($errMsg);
+            return;
+        }
         dd($res);
     }
 

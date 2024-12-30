@@ -59,4 +59,27 @@ class GenerateParams
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function getTargetImage(): string
+    {
+        return $this->targetImage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserImage(): string
+    {
+        return $this->userImage;
+    }
+
+    /**
+     * @return FaceMapping
+     */
+    public function getFaceMapping(): FaceMapping
+    {
+        return $this->faceMapping;
+    }
 }

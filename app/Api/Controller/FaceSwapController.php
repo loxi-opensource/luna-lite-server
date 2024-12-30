@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Cache;
 class FaceSwapController extends BaseApiController
 {
     // 生成图片
-    function generate(Request $request)
+    public function generate(Request $request)
     {
         try {
             $params = new GenerateParams(
@@ -41,7 +41,7 @@ class FaceSwapController extends BaseApiController
             return $this->fail($errMsg);
         }
 
-        return $this->success("success", $result);
+        return $this->success("success", compact('result'));
     }
 
     // 上传用户图，制作数字分身。用户图有多少张人脸就创建多少个分身。

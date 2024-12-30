@@ -97,7 +97,12 @@ class FaceSwapService
         $generateTaskId = $generateResult['task_id'];
 
         // 统一数据结构
-        return $this->pollForGenerateResult($generateTaskId);
+        $res = $this->pollForGenerateResult($generateTaskId);
+        $imageUrl = Arr::get($res, 'img_raw_url');
+        if (empty($imageUrl)) {
+            throw new \Exception("Failed to retrieve generated image URL.");
+        }
+        return $imageUrl;
     }
 
     /**

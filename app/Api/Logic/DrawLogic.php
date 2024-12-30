@@ -3,6 +3,7 @@
 namespace App\Api\Logic;
 
 use App\Common\Enum\User\AccountLogEnum;
+use App\Common\Logic\BaseLogic;
 use App\Common\Model\User\User;
 use App\Common\Service\ConfigService;
 use App\Common\Service\Storage\Driver as StorageDriver;
@@ -12,7 +13,7 @@ use App\Common\Logic\AccountLogLogic;
 /**
  * 作图逻辑
  */
-class DrawLogic
+class DrawLogic extends BaseLogic
 {
     /**
      * @notes 校验能否作图
