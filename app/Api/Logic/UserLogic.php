@@ -46,9 +46,11 @@ class UserLogic extends BaseLogic
      */
     public static function info(int $userId): array
     {
-        $user = User::select('id', 'sn', 'sex', 'account', 'password', 'nickname', 'real_name', 'avatar', 'mobile', 'create_time', 'user_money')
-            ->where('id', $userId)
-            ->first();
+        $user = User::select('id', 'sn', 'sex', 'account',
+            'password', 'nickname', 'real_name',
+            'avatar', 'mobile', 'create_time',
+            'user_money', 'balance', 'balance_draw'
+        )->where('id', $userId)->first();
 
         $user->has_password = !empty($user->password);
         $user->has_auth = self::hasWechatAuth($userId);

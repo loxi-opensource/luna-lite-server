@@ -17,6 +17,7 @@ class SwapTemplateController extends BaseApiController
         $params = (new SwapTemplateValidate())->get()->goCheck('groupList');
         $rows = SwapTemplateGroup::query()
             ->with(['templates' => fn($query) => $query->where('status', 1)])
+            ->orderByDesc('id')
             ->get();
         $res['groupList'] = $rows;
         return $this->success("success", $res);
