@@ -3,7 +3,7 @@
 namespace App\Api\Controller;
 
 use App\Common\Model\DigitalAvatar;
-use http\Env\Request;
+use Illuminate\Http\Request;
 
 class DigitalAvatarController extends BaseApiController
 {
