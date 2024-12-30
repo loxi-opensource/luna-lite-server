@@ -4,6 +4,7 @@ namespace App\Adminapi\Logic\Setting;
 
 use App\Common\Logic\BaseLogic;
 use App\Common\Service\ConfigService;
+use App\Common\Service\FileService;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -148,6 +149,8 @@ class StorageLogic extends BaseLogic
 
         Cache::delete('STORAGE_DEFAULT');
         Cache::delete('STORAGE_ENGINE');
+        // 刷新这两个缓存
+        FileService::getFileUrl();
         if ($params['engine'] == 'local' && $params['status'] == 0) {
             return '默认开启本地存储';
         } else {
@@ -169,5 +172,7 @@ class StorageLogic extends BaseLogic
         }
         Cache::delete('STORAGE_DEFAULT');
         Cache::delete('STORAGE_ENGINE');
+        // 刷新这两个缓存
+        FileService::getFileUrl();
     }
 }
