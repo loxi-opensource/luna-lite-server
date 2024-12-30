@@ -2,6 +2,7 @@
 
 namespace App\Common\Service\FaceSwap;
 
+use App\Common\Service\Aliyun\ImageCropService;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Env;
@@ -30,6 +31,39 @@ class FaceSwapService
         }
 
         $this->baseUrl = 'https://mhapi.sensetime.com/v1/face';
+    }
+
+    // 人脸检测
+    public function detectFace($imageUrl)
+    {
+        $detectResult = $this->detect($imageUrl);
+
+        if (!isset($detectResult['task_id'])) {
+            throw new \Exception("Target image detection failed: " . json_encode($detectResult));
+        }
+
+        $taskId = $detectResult['task_id'];
+        $detectData = $this->pollForDetectResult($taskId);
+
+        if (empty($detectData) or !isset($detectData['faces'])) {
+            throw new \Exception("Failed to retrieve detection results for target image.");
+        }
+
+        list($originWidth, $originHeight) = (new ImageCropService($imageUrl))->getImageInfo($imageUrl);
+        $faceList = [];
+        foreach ($detectData['faces'] as $face) {
+            // 统一数据结构
+            $faceList[] = [
+                // 人脸坐标 / 原图尺寸的比例
+                'boundingBoxLeft' => $face['coords']['start_x'] / $originWidth,
+                'boundingBoxTop' => $face['coords']['start_y'] / $originHeight,
+                'boundingBoxWidth' => ($face['coords']['end_x'] - $face['coords']['start_x']) / $originWidth,
+                'boundingBoxHeight' => ($face['coords']['end_y'] - $face['coords']['start_y']) / $originHeight,
+                // 人脸ID
+                'id' => strval($face['index']),
+            ];
+        }
+        return $faceList;
     }
 
     /**
@@ -138,7 +172,7 @@ class FaceSwapService
                 return $task;
             }
 
-            sleep(2);
+            sleep(1);
             $attempts++;
         }
 

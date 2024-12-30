@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Common\Model\SwapTemplateGroup;
-use App\Common\Service\FaceSwap\FaceSwapService;
+use App\Common\Model\DigitalAvatar;
+use App\Common\Service\ConfigService;
 use Illuminate\Console\Command;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class AppTest extends Command
 {
@@ -28,10 +28,8 @@ class AppTest extends Command
      */
     public function handle()
     {
-        $rows = SwapTemplateGroup::query()
-            ->with(['templates' => fn($query) => $query->where('status', 1)])
-            ->get();
-        dd($rows->toArray());
+        $res = DigitalAvatar::query()->where('id', '>', 0)->get();
+        dd($res->toArray());
     }
 
 }

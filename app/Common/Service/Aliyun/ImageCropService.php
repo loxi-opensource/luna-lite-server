@@ -2,6 +2,8 @@
 
 namespace App\Common\Service\Aliyun;
 
+use Illuminate\Support\Facades\Cache;
+
 class ImageCropService
 {
     private $imageUrl;
@@ -17,25 +19,28 @@ class ImageCropService
 
     public function getImageInfo($imageUrl)
     {
-        // 发起 GET 请求获取图片信息
-        $infoUrl = $imageUrl . "?x-oss-process=image/info";
-        $response = file_get_contents($infoUrl);
+        $key = 'oss_image_info:' . md5($imageUrl);
+        return Cache::rememberForever($key, function () use ($imageUrl) {
+            // 发起 GET 请求获取图片信息
+            $infoUrl = $imageUrl . "?x-oss-process=image/info";
+            $response = file_get_contents($infoUrl);
 
-        if ($response === false) {
-            throw new \Exception("Unable to fetch image info.");
-        }
+            if ($response === false) {
+                throw new \Exception("Unable to fetch image info.");
+            }
 
-        // 解析 JSON 响应
-        $info = json_decode($response, true);
+            // 解析 JSON 响应
+            $info = json_decode($response, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception("Invalid JSON response.");
-        }
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception("Invalid JSON response.");
+            }
 
-        return [
-            (int)$info['ImageWidth']['value'],
-            (int)$info['ImageHeight']['value'],
-        ];
+            return [
+                (int)$info['ImageWidth']['value'],
+                (int)$info['ImageHeight']['value'],
+            ];
+        });
     }
 
     // 按x,y,w,h比例裁剪图片
