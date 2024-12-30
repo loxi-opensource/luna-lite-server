@@ -5,6 +5,7 @@ namespace App\Api\Controller;
 use App\Api\Logic\FaceSwapLogic;
 use App\Common\Enum\FileEnum;
 use App\Common\Model\DigitalAvatar;
+use App\Common\Model\SwapRecord;
 use App\Common\Model\User\User;
 use App\Common\Service\Aliyun\ImageCropService;
 use App\Common\Service\FaceSwap\FaceSwapService;
@@ -81,19 +82,14 @@ class FaceSwapController extends BaseApiController
     }
 
     // 用户作图记录
-    function myGalleryListV3()
+    public function userRecords(Request $request)
     {
-        $data = (new SwapTask())
-            ->where('user_id', $this->userId)
-            ->order('id desc')
-            ->paginate($this->request->get('per_page', 10));
-
-        $data = $data->toArray();
-        if (empty($data['data'])) {
-            return $this->success("success", $data);
-        }
-
-        return $this->success("success", $data);
+        $data = SwapRecord::query()
+            ->where('user_id', $this->getUserId())
+            ->orderBy('id', 'desc')
+            ->simplePaginate($request->get('per_page', 10));
+        $lists = Arr::get($data->toArray(), 'data', []);
+        return $this->success("success", compact('lists'));
     }
 
 }
