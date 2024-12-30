@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller;
 
-//use app\api\logic\LunaDrawLogic;
+use App\Api\Logic\FaceSwapLogic;
 use App\Common\Enum\FileEnum;
 use App\Common\Model\DigitalAvatar;
 use App\Common\Model\User\User;
@@ -22,27 +22,22 @@ use Illuminate\Support\Str;
 
 class FaceSwapController extends BaseApiController
 {
-    // 发起AI换脸作图任务
-    function submitDrawingV3()
+    // 生成图片
+    function generate()
     {
-        // 校验通过，发起任务
-        $result = LunaDrawLogic::submitTaskV3(
-            User::find($this->userId),
+        $result = FaceSwapLogic::generate(
+            User::query()->findOrFail($this->getUserId()),
             new Draft($this->request->post('draft')),
         );
         if (!$result) {
-            $errMsg = LunaDrawLogic::getError();
-            if (Str::contains($errMsg, '创建任务失败')) {
-                return $this->fail('Fail to create a oreder, please contact customer service');
-            }
+            $errMsg = FaceSwapLogic::getError();
             return $this->fail($errMsg);
         }
 
         return $this->success("success", $result);
     }
 
-
-    // 上传用户图，制作数字分身（用户图有多少张人脸就创建多少个分身）
+    // 上传用户图，制作数字分身。用户图有多少张人脸就创建多少个分身。
     public function uploadImage(FaceSwapService $faceSwapService)
     {
         try {
