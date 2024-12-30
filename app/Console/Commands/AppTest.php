@@ -39,6 +39,8 @@ class AppTest extends Command
                 "T#0" => "U#0"
             ],
         ];
+        $this->info(json_encode($params));
+        return;
         $genParams = new GenerateParams($params['target_image'], $params['user_image'], $params['face_mapping']);
 //        $res = (new FaceSwapService())->swapFaces($genParams);
         $res = FaceSwapLogic::generate(User::query()->find(1), $genParams);

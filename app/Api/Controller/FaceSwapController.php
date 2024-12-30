@@ -74,7 +74,7 @@ class FaceSwapController extends BaseApiController
                 DigitalAvatar::create($newRow);
             }
 
-            return $this->success('success', $newRow);
+            return $this->success('success', ['user_image' => $imageUrl]);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
