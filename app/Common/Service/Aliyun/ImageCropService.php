@@ -14,11 +14,22 @@ class ImageCropService
     public function __construct($imageUrl)
     {
         $this->imageUrl = $imageUrl;
-        list($this->width, $this->height) = $this->getImageInfo($imageUrl);
+        list($this->width, $this->height) = $this->getImageInfo();
     }
 
-    public function getImageInfo($imageUrl)
+    public function getImageWidth()
     {
+        return $this->width;
+    }
+
+    public function getImageHeight()
+    {
+        return $this->height;
+    }
+
+    private function getImageInfo()
+    {
+        $imageUrl = $this->imageUrl;
         $key = 'oss_image_info:' . md5($imageUrl);
         return Cache::rememberForever($key, function () use ($imageUrl) {
             // 发起 GET 请求获取图片信息
