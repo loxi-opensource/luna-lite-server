@@ -153,7 +153,7 @@ class FaceSwapLogic extends DrawLogic
         $drawNumber = count($faceMappingList->toArray());
 
         // 校验余额
-        $checkResult = self::checkAbleDraw($user->id, $drawNumber);
+        $checkResult = self::checkAbleDraw($user, $drawNumber);
         if ($checkResult !== true) {
             self::setError($checkResult);
             return false;
@@ -187,7 +187,7 @@ class FaceSwapLogic extends DrawLogic
             $newTask->save();
 
             // 扣除余额
-            self::drawBalanceHandle($user->id, $drawNumber, AccountLogEnum::DRAW_DEC_IMAGE);
+            self::drawBalanceHandle($user, $drawNumber, AccountLogEnum::DRAW_DEC_IMAGE);
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();

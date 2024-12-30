@@ -3,10 +3,11 @@
 namespace App\Api\Logic;
 
 use App\Common\Enum\User\AccountLogEnum;
-use App\Common\Model\User;
+use App\Common\Model\User\User;
 use App\Common\Service\ConfigService;
-use App\Services\Storage\Driver as StorageDriver;
+use App\Common\Service\Storage\Driver as StorageDriver;
 use Illuminate\Support\Facades\Log;
+use App\Common\Logic\AccountLogLogic;
 
 /**
  * 作图逻辑
@@ -16,11 +17,9 @@ class DrawLogic
     /**
      * @notes 校验能否作图
      */
-    public static function checkAbleDraw($userId, $needBalance)
+    public static function checkAbleDraw(User $user, $needBalance)
     {
-        $user = User::find($userId);
-
-        if (!$user || $user->balance_draw < $needBalance) {
+        if ($user->balance_draw < $needBalance) {
             return '余额不足';
         }
         return true;
@@ -29,11 +28,8 @@ class DrawLogic
     /**
      * @notes 作图余额处理
      */
-    public static function drawBalanceHandle($userId, $usedToken, $changeType)
+    public static function drawBalanceHandle(User $user, $usedToken, $changeType)
     {
-        // 用户信息
-        $user = User::findOrEmpty($userId);
-
         // $action 变动类型 $totalDraw 累计作图消费 $balanceDraw 作图余额
         if (in_array($changeType, AccountLogEnum::DRAW_INC)) {
             $action = AccountLogEnum::INC;
@@ -50,7 +46,7 @@ class DrawLogic
         $user->save();
 
         // 记录账户流水
-        AccountLogLogic::add($userId, $changeType, $action, $usedToken);
+        AccountLogLogic::add($user, $changeType, $action, $usedToken);
     }
 
     /**
@@ -85,7 +81,6 @@ class DrawLogic
             }
 
             return $localPath;
-
         } catch (\Exception $e) {
             Log::error('作图结果图片下载失败' . $e->getMessage(), [
                 'line' => $e->getLine()

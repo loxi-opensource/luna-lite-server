@@ -11,29 +11,31 @@ class AccountLogLogic extends BaseLogic
     /**
      * @notes 账户流水记录
      */
-    public static function add($userId, $changeType, $action, $changeAmount, string $sourceSn = '', string $remark = '', array $extra = [])
+    public static function add(User $user, $changeType, $action, $changeAmount, string $sourceSn = '', string $remark = '', array $extra = [])
     {
-        $user = User::find($userId);
-        if (!$user) {
-            return false;
-        }
-
         $changeObject = AccountLogEnum::getChangeObject($changeType);
         if (!$changeObject) {
             return false;
         }
 
         switch ($changeObject) {
-            // 用户余额
+            // 对话余额
             case AccountLogEnum::UM:
+                $left_amount = $user->balance;
+                break;
+            // 可提现佣金
+            case AccountLogEnum::MONEY:
                 $left_amount = $user->user_money;
                 break;
-            // 其他
+            // 作图余额
+            case AccountLogEnum::DRAW:
+                $left_amount = $user->balance_draw;
+                break;
         }
 
         $data = [
             'sn' => generate_sn(UserAccountLog::class, 'sn', 20),
-            'user_id' => $userId,
+            'user_id' => $user->id,
             'change_object' => $changeObject,
             'change_type' => $changeType,
             'action' => $action,
