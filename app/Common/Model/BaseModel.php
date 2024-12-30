@@ -3,6 +3,7 @@
 namespace App\Common\Model;
 
 use App\Common\Service\FileService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
@@ -40,23 +41,11 @@ class BaseModel extends Model
         return 'delete_time';
     }
 
-    /**
-     * @notes 公共处理图片,补全路径
-     * @param $value
-     * @return string
-     */
-    public function getImageAttribute($value)
+    protected function image(): Attribute
     {
-        return trim($value) ? FileService::getFileUrl($value) : '';
+        return Attribute::make(
+            get: fn(string $value) => trim($value) ? FileService::getFileUrl($value) : '',
+            set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
+        );
     }
-
-    /**
-     * @notes 公共图片处理,去除图片域名
-     * @param $value
-     */
-    public function setImageAttribute($value)
-    {
-        return trim($value) ? FileService::setFileUrl($value) : '';
-    }
-
 }

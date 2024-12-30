@@ -68,13 +68,14 @@ class SwapTemplateLogic extends BaseLogic
     {
         DB::beginTransaction();
         try {
-            SwapTemplate::where('id', $params['id'])->update([
+            $model = SwapTemplate::findOrFail($params['id']);
+            $model->fill([
                 'name' => $params['name'],
                 'status' => $params['status'],
                 'group_id' => $params['group_id'],
                 'target_image' => $params['target_image'],
             ]);
-
+            $model->save();
             DB::commit();
             return true;
         } catch (\Exception $e) {
