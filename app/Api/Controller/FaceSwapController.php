@@ -3,6 +3,9 @@
 namespace App\Api\Controller;
 
 use App\Api\Logic\FaceSwapLogic;
+use App\Api\Validate\FaceSwapValidate;
+use App\Common\Model\DigitalAvatar;
+use App\Common\Model\SwapTemplate;
 use App\Common\Model\User\User;
 use App\Common\Types\Swap\GenerateParams;
 use Illuminate\Http\Request;
@@ -12,17 +15,28 @@ class FaceSwapController extends BaseApiController
     // 生成AI换脸结果
     public function createSwap(Request $request)
     {
+        $params = (new FaceSwapValidate())->post()->goCheck('createSwap');
+        $template = SwapTemplate::query()->with('templateGroup')->find($params['template_id']);
+        $avatar = DigitalAvatar::query()->find($params['avatar_id']);
+
+        $targetImageFaceIndex = '0';
+        $faceMapping = [
+            'T#' . $targetImageFaceIndex => 'U#' . $avatar->face_id,
+        ];
+
         try {
+            // 组装换脸参数
             $params = new GenerateParams(
-                $request->post('target_image'),
-                $request->post('user_image'),
-                $request->post('face_mapping')
+                $template->target_image,
+                $avatar->user_image,
+                $faceMapping,
             );
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
 
-        $result = FaceSwapLogic::createSwap(User::query()->findOrFail($this->getUserId()), $params);
+        $user = User::query()->findOrFail($this->getUserId());
+        $result = FaceSwapLogic::createSwap($user, $params, $template, $avatar);
         if ($result === false) {
             $errMsg = FaceSwapLogic::getError();
             return $this->fail($errMsg);

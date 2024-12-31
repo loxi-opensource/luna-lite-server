@@ -6,6 +6,7 @@ use App\Common\Enum\FileEnum;
 use App\Common\Enum\User\AccountLogEnum;
 use App\Common\Model\DigitalAvatar;
 use App\Common\Model\SwapRecord;
+use App\Common\Model\SwapTemplate;
 use App\Common\Model\User\User;
 use App\Common\Service\Aliyun\ImageCropService;
 use App\Common\Service\FaceSwap\FaceSwapService;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 
 class FaceSwapLogic extends DrawLogic
 {
-    static function createSwap(User $user, GenerateParams $params)
+    static function createSwap(User $user, GenerateParams $params, SwapTemplate $template, DigitalAvatar $avatar)
     {
         // 作图总数
         $drawNumber = 1;
@@ -53,6 +54,10 @@ class FaceSwapLogic extends DrawLogic
             $newRecord->target_image = $params->getTargetImage();
             $newRecord->user_image = $params->getUserImage();
             $newRecord->result_image = $resultImage;
+            $newRecord->face_image = $avatar->face_image;
+            $newRecord->face_id = $avatar->face_id;
+            $newRecord->template_name = $template->name;
+            $newRecord->template_group_name = $template->templateGroup->name;
             $newRecord->save();
 
             // 扣除余额
@@ -110,15 +115,6 @@ class FaceSwapLogic extends DrawLogic
         }
     }
 
-    //    public function userRecords(Request $request)
-    //    {
-    //        $data = SwapRecord::query()
-    //            ->where('user_id', $this->getUserId())
-    //            ->orderBy('id', 'desc')
-    //            ->simplePaginate($request->get('per_page', 10));
-    //        $lists = Arr::get($data->toArray(), 'data', []);
-    //        return $this->success("success", compact('lists'));
-    //    }
     static function userRecords($userId, $perPage = 10)
     {
         $data = SwapRecord::query()
