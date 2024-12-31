@@ -26,11 +26,10 @@ use App\Common\Model\BaseModel;
  */
 class SwapPageConfig extends BaseModel
 {
-    
-
     protected $table = 'swap_page_config';
 
-    
+    public $casts = [
+        'page_data' => 'array'
+    ];
 
-    
 }

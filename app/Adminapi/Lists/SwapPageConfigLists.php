@@ -20,6 +20,7 @@ use app\common\model\OldGoodsPoolCategory;
 use App\Common\Model\SwapPageConfig;
 use App\Common\Lists\ListsSearchInterface;
 use App\Common\Model\SwapTemplateGroup;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -68,8 +69,7 @@ class SwapPageConfigLists extends BaseAdminDataLists implements ListsSearchInter
 
         // 处理每个配置
         $rows = $rows->map(function ($row) use ($allTemplateGroups) {
-            // 确保 page_data 是数组
-            $pageData = is_array($row->page_data) ? $row->page_data : json_decode($row->page_data, true);
+            $pageData = $row->page_data;
 
             // 处理 show_list
             $pageData['show_list'] = collect($pageData['show_list'] ?? [])
