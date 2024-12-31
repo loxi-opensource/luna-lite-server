@@ -30,10 +30,17 @@ class Feedback extends BaseModel
 
     protected $table = 'feedback';
 
+    protected $appends = ['type_desc'];
+
     protected function getDeletedAtColumn()
     {
         return 'delete_time';
     }
 
-    
+    public function getTypeDescAttribute($value)
+    {
+        $result = [1 => '故障', 2 => '建议', 3 => '投诉'];
+        return $result[$this->attributes['type']] ?? '';
+    }
+
 }
