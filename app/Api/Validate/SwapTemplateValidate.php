@@ -11,7 +11,7 @@ class SwapTemplateValidate extends BaseValidate
     {
         $rules = [
             'groupList' => [
-                'page_id' => 'required',
+                'page_id' => 'required|exists:swap_page_config,id',
             ],
         ];
 
@@ -20,6 +20,7 @@ class SwapTemplateValidate extends BaseValidate
 
     protected $messages = [
         'page_id.required' => 'page_id必填',
+        'page_id.exists' => 'page_id配置不存在',
     ];
 
     public function messages()
