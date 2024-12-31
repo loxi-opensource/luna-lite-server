@@ -16,8 +16,10 @@ namespace App\Adminapi\Lists;
 
 
 use App\Adminapi\Lists\BaseAdminDataLists;
+use app\common\model\OldGoodsPoolCategory;
 use App\Common\Model\SwapPageConfig;
 use App\Common\Lists\ListsSearchInterface;
+use App\Common\Model\SwapTemplateGroup;
 
 
 /**
@@ -38,7 +40,7 @@ class SwapPageConfigLists extends BaseAdminDataLists implements ListsSearchInter
     public function setSearch(): array
     {
         return [
-            
+
         ];
     }
 
@@ -51,13 +53,48 @@ class SwapPageConfigLists extends BaseAdminDataLists implements ListsSearchInter
      */
     public function lists(): array
     {
-        return SwapPageConfig::applySearchWhere($this->searchWhere)
+        $rows = SwapPageConfig::applySearchWhere($this->searchWhere)
             ->select(['id', 'name', 'page_data'])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
             ->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+            ->get();
+
+        // 获取所有模板组
+        $allTemplateGroups = SwapTemplateGroup::query()
+            ->where('status', 1)
+            ->select(['id', 'name'])
+            ->get();
+
+        // 处理每个配置
+        $rows = $rows->map(function ($row) use ($allTemplateGroups) {
+            // 确保 page_data 是数组
+            $pageData = is_array($row->page_data) ? $row->page_data : json_decode($row->page_data, true);
+
+            // 处理 show_list
+            $pageData['show_list'] = collect($pageData['show_list'] ?? [])
+                ->map(function ($item) use ($allTemplateGroups) {
+                    $templateInfo = $allTemplateGroups->firstWhere('id', $item['id']);
+                    return $templateInfo ? array_merge($item, $templateInfo->toArray()) : $item;
+                })
+                ->values()
+                ->toArray();
+
+            // 处理 pending_list
+            $usedIds = collect($pageData['show_list'])->pluck('id')->toArray();
+            $pageData['pending_list'] = $allTemplateGroups
+                ->reject(function ($item) use ($usedIds) {
+                    return in_array($item->id, $usedIds);
+                })
+                ->values()
+                ->toArray();
+
+            $row->page_data = $pageData;
+            return $row;
+        });
+
+        return $rows->toArray();
+
     }
 
 
