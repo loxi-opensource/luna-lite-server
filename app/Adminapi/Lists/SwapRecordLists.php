@@ -52,7 +52,11 @@ class SwapRecordLists extends BaseAdminDataLists implements ListsSearchInterface
     public function lists(): array
     {
         return SwapRecord::applySearchWhere($this->searchWhere)
-            ->select(['id', 'user_id', 'target_image', 'user_image', 'result_image', 'create_time'])
+            ->select([
+                'id', 'user_id', 'target_image', 'user_image',
+                'result_image', 'create_time', 'face_image', 'face_id',
+                'template_name', 'template_group_name'
+                ])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
             ->orderBy('id', 'desc')

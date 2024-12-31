@@ -61,4 +61,12 @@ class SwapRecord extends BaseModel
         );
     }
 
+    protected function faceImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => trim($value) ? FileService::getFileUrl($value) : '',
+            set: fn(string $value) => trim($value) ? FileService::setFileUrl($value) : ''
+        );
+    }
+
 }
