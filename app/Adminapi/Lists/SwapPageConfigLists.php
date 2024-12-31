@@ -58,7 +58,6 @@ class SwapPageConfigLists extends BaseAdminDataLists implements ListsSearchInter
             ->select(['id', 'name', 'page_data'])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
-            ->orderBy('id', 'desc')
             ->get();
 
         // 获取所有模板组
