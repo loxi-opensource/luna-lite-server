@@ -50,6 +50,59 @@ class Aliyun extends Server
     }
 
     /**
+     * 同步目录
+     */
+    public function syncDir($localDir, $targetDir)
+    {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $this->error = '阿里云OSS目录同步不支持反斜杠目录分隔符，请在Linux环境下运行';
+            return false;
+        }
+
+        // 阿里云OSS不需要以'/'开头和结尾
+        $targetDir = trim($targetDir, '/');
+
+        try {
+            $ossClient = new OssClient(
+                $this->config['access_key'],
+                $this->config['secret_key'],
+                $this->config['domain'],
+                true
+            );
+            $res = $ossClient->uploadDir(
+                $this->config['bucket'],
+                $targetDir,
+                $localDir,
+                '.|..|.svn|.git',
+                true
+            );
+            return $res;
+            // 返回结果示例
+            //array:2 [
+            //  "succeededList" => array:3 [
+            //    0 => "dir2/bar.txt"
+            //    1 => "dir1/foo.txt"
+            //    2 => "ad01.jpg"
+            //  ]
+            //  "failedList" => []
+
+            //array:2 [
+            //  "succeededList" => []
+            //  "failedList" => array:3 [
+            //    "/test2/dir2/bar.txt" => ""/test2/dir2/bar.txt" object name is invalid"
+            //    "/test2/dir1/foo.txt" => ""/test2/dir1/foo.txt" object name is invalid"
+            //    "/test2/ad01.jpg" => ""/test2/ad01.jpg" object name is invalid"
+            //  ]
+        } catch (\Exception $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+
+        $this->error = '错误未定义：目录同步结果为空';
+        return false;
+    }
+
+    /**
      * Notes: 抓取远程资源
      * @param $url
      * @param null $key

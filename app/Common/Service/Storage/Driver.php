@@ -2,7 +2,9 @@
 
 namespace App\Common\Service\Storage;
 
+use App\Common\Service\Storage\Engine\Server;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * 存储模块驱动
@@ -10,6 +12,10 @@ use Exception;
 class Driver
 {
     private $config;    // upload 配置
+
+    /**
+     * @var Server $engine
+     */
     private $engine;    // 当前存储引擎类
 
     /**
@@ -53,6 +59,17 @@ class Driver
     public function upload($save_dir)
     {
         return $this->engine->upload($save_dir);
+    }
+
+    /**
+     * 同步目录
+     */
+    public function syncDir($localDir, $targetDir)
+    {
+        if ($this->config['default'] !== 'aliyun') {
+            throw new InvalidArgumentException('同步目录功能仅支持阿里云OSS');
+        }
+        return $this->engine->syncDir($localDir, $targetDir);
     }
 
     /**

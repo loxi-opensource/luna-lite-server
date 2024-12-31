@@ -87,6 +87,11 @@ abstract class Server
     abstract protected function upload($save_dir);
 
     /**
+     * 同步目录
+     */
+    abstract protected function syncDir($localDir, $targetDir);
+
+    /**
      * 文件删除
      * @param $fileName
      * @return mixed

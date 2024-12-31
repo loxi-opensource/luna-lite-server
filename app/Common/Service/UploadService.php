@@ -69,6 +69,37 @@ class UploadService
         }
     }
 
+    /**
+     * @notes 同步目录
+     */
+    public static function syncLocalDirectory($localDir, $targetDir)
+    {
+
+        // 初始化配置
+        $config = [
+            'default' => ConfigService::get('storage', 'default', 'local'),
+            'engine' => ConfigService::get('storage') ?? ['local' => []],
+        ];
+
+        // TODO 支持更多存储引擎
+        if ($config['default'] !== 'aliyun') {
+            throw new Exception('请先配置阿里云OSS存储');
+        }
+
+        // 检查文件目录是否存在，且是有效目录
+        if (!is_dir($localDir)) {
+            throw new Exception($localDir . '目录不存在');
+        }
+
+        // 开始同步
+        $driver = new StorageDriver($config);
+        $syncResult = $driver->syncDir($localDir, $targetDir);
+        if ($syncResult === false) {
+            throw new Exception($driver->getError());
+        }
+        return $syncResult;
+    }
+
 
     /**
      * @notes 视频上传
