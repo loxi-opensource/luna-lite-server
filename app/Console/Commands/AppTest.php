@@ -43,7 +43,7 @@ class AppTest extends Command
         return;
         $genParams = new GenerateParams($params['target_image'], $params['user_image'], $params['face_mapping']);
 //        $res = (new FaceSwapService())->swapFaces($genParams);
-        $res = FaceSwapLogic::generate(User::query()->find(1), $genParams);
+        $res = FaceSwapLogic::createSwap(User::query()->find(1), $genParams);
         if (!$res) {
             $errMsg = FaceSwapLogic::getError();
             $this->error($errMsg);
