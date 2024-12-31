@@ -15,6 +15,8 @@
 namespace App\Adminapi\Logic;
 
 
+use App\Common\Enum\YesNoEnum;
+use App\Common\Model\Article\ArticleCate;
 use App\Common\Model\SwapTemplateGroup;
 use App\Common\Logic\BaseLogic;
 use Illuminate\Support\Facades\DB;
@@ -105,4 +107,13 @@ class SwapTemplateGroupLogic extends BaseLogic
     {
         return SwapTemplateGroup::findOrFail($params['id'])->toArray();
     }
+
+    public static function getAllData()
+    {
+        return SwapTemplateGroup::where('status', YesNoEnum::YES)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
+    }
+
 }

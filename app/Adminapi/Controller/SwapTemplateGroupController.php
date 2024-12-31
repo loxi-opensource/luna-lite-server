@@ -18,6 +18,7 @@ namespace App\Adminapi\Controller;
 
 use App\Adminapi\Controller\BaseAdminController;
 use App\Adminapi\Lists\SwapTemplateGroupLists;
+use App\Adminapi\Logic\Article\ArticleCateLogic;
 use App\Adminapi\Logic\SwapTemplateGroupLogic;
 use App\Adminapi\Validate\SwapTemplateGroupValidate;
 
@@ -99,5 +100,13 @@ class SwapTemplateGroupController extends BaseAdminController
         return $this->data($result);
     }
 
+    /**
+     * @notes 获取全部分组
+     */
+    public function all()
+    {
+        $result = SwapTemplateGroupLogic::getAllData();
+        return $this->data($result);
+    }
 
 }

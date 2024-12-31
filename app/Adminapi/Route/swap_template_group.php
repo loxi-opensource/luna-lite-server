@@ -26,4 +26,5 @@ Route::controller(SwapTemplateGroupController::class)->group(function () {
     Route::post('/swap_template_group/edit', 'edit');
     Route::post('/swap_template_group/delete', 'delete');
     Route::get('/swap_template_group/detail', 'detail');
+    Route::get('/swap_template_group/all', 'all');
 });

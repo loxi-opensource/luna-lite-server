@@ -53,6 +53,7 @@ class SwapTemplateLists extends BaseAdminDataLists implements ListsSearchInterfa
     public function lists(): array
     {
         return SwapTemplate::applySearchWhere($this->searchWhere)
+            ->with('templateGroup')
             ->select(['id', 'name', 'status', 'group_id', 'target_image'])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
