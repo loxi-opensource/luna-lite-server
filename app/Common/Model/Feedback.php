@@ -16,6 +16,8 @@ namespace App\Common\Model;
 
 
 use App\Common\Model\BaseModel;
+use App\Common\Model\File\File;
+use App\Common\Service\FileService;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -30,7 +32,7 @@ class Feedback extends BaseModel
 
     protected $table = 'feedback';
 
-    protected $appends = ['type_desc'];
+    protected $appends = ['type_desc', 'image_list'];
 
     protected function getDeletedAtColumn()
     {
@@ -41,6 +43,17 @@ class Feedback extends BaseModel
     {
         $result = [1 => '故障', 2 => '建议', 3 => '投诉'];
         return $result[$this->attributes['type']] ?? '';
+    }
+
+    public function getImageListAttribute()
+    {
+        $fileIds = explode(',', $this->attributes['images']);
+        $urls = File::query()->whereIn('id', $fileIds)->pluck('uri');
+        $imageList = [];
+        foreach ($urls as $url) {
+            $imageList[] = FileService::getFileUrl($url);
+        }
+        return $imageList;
     }
 
 }

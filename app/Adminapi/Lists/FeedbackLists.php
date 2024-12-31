@@ -52,7 +52,7 @@ class FeedbackLists extends BaseAdminDataLists implements ListsSearchInterface
     public function lists(): array
     {
         return Feedback::applySearchWhere($this->searchWhere)
-            ->select(['id', 'user_id', 'type', 'content', 'mobile'])
+            ->select(['id', 'user_id', 'type', 'content', 'mobile', 'images', 'create_time'])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
             ->orderBy('id', 'desc')
