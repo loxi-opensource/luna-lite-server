@@ -74,7 +74,6 @@ class UploadService
      */
     public static function syncLocalDirectory($localDir, $targetDir)
     {
-
         // 初始化配置
         $config = [
             'default' => ConfigService::get('storage', 'default', 'local'),
