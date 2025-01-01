@@ -48,6 +48,7 @@ class SwapTemplateValidate extends BaseValidate
                 'status' => 'required',
                 'group_id' => 'required',
                 'target_image' => 'required',
+                'sort' => 'integer|min:0',
             ],
             'edit' => [
                 'id' => 'required',
@@ -55,6 +56,7 @@ class SwapTemplateValidate extends BaseValidate
                 'status' => 'required',
                 'group_id' => 'required',
                 'target_image' => 'required',
+                'sort' => 'integer|min:0',
             ],
             'detail' => [
                 'id' => 'required',

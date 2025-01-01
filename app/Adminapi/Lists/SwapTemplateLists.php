@@ -54,9 +54,11 @@ class SwapTemplateLists extends BaseAdminDataLists implements ListsSearchInterfa
     {
         return SwapTemplate::applySearchWhere($this->searchWhere)
             ->with('templateGroup')
-            ->select(['id', 'name', 'status', 'group_id', 'target_image'])
+            ->select(['id', 'name', 'status', 'group_id', 'target_image', 'sort', 'create_time'])
             ->limit($this->limitLength)
             ->offset($this->limitOffset)
+            ->orderBy('group_id', 'desc')
+            ->orderBy('sort', 'desc')
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();

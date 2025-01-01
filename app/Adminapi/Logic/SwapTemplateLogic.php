@@ -45,6 +45,7 @@ class SwapTemplateLogic extends BaseLogic
                 'status' => $params['status'],
                 'group_id' => $params['group_id'],
                 'target_image' => $params['target_image'],
+                'sort' => $params['sort'],
             ]);
 
             DB::commit();
@@ -74,6 +75,7 @@ class SwapTemplateLogic extends BaseLogic
                 'status' => $params['status'],
                 'group_id' => $params['group_id'],
                 'target_image' => $params['target_image'],
+                'sort' => $params['sort'],
             ]);
             $model->save();
             DB::commit();

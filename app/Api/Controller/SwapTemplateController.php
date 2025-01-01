@@ -22,7 +22,12 @@ class SwapTemplateController extends BaseApiController
         $groupIds = array_column(Arr::get($pageData, 'show_list', []), 'id');
 
         $rows = SwapTemplateGroup::query()
-            ->with(['templates' => fn($query) => $query->where('status', 1)])
+            ->with([
+                'templates' =>
+                    fn($query) => $query->where('status', 1)
+                        ->orderByDesc('sort')
+                        ->orderByDesc('id')
+            ])
             ->whereIn('id', $groupIds)
             ->orderByRaw('FIND_IN_SET(id, "' . implode(',', $groupIds) . '")')
             ->orderByDesc('id')
