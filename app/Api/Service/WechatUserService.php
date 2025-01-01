@@ -2,8 +2,10 @@
 
 namespace App\Api\Service;
 
+use App\Common\Enum\User\AccountLogEnum;
 use App\Common\Enum\User\UserTerminalEnum;
 use App\Common\Enum\YesNoEnum;
+use App\Common\Logic\AccountLogLogic;
 use App\Common\Model\User\User;
 use App\Common\Model\User\UserAuth;
 use App\Common\Service\ConfigService;
@@ -128,11 +130,26 @@ class WechatUserService
         $this->user->channel = $this->terminal;
         $this->user->is_new_user = YesNoEnum::YES;
 
+        $registerBalance = config('project.login.register_balance', 0);
+        $this->user->balance_draw = $registerBalance;
+
         if ($this->terminal != UserTerminalEnum::WECHAT_MMP && !empty($this->nickname)) {
             $this->user->nickname = $this->nickname;
         }
 
         $this->user->save();
+
+        // 注册赠送作图次数
+        if ($registerBalance > 0) {
+            AccountLogLogic::add(
+                $this->user,
+                AccountLogEnum::DRAW_INC_REGISTER,
+                AccountLogEnum::INC,
+                $registerBalance,
+                '',
+                $params['remark'] ?? ''
+            );
+        }
 
         UserAuth::create([
             'user_id' => $this->user->id,

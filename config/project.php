@@ -94,6 +94,8 @@ return [
         'qq_auth' => 0,
         // 登录政策协议 0-关闭 1-开启
         'login_agreement' => 1,
+        // 新用户注册赠送作图余额
+        'register_balance' => 30,
     ],
 
     // 后台装修
