@@ -1,96 +1,112 @@
-<h1 align="center" style="margin: 10px 0 10px; font-weight: bold;">likeadmin_laravel</h1>
-<h3 align="center" style="margin-bottom: 10px;">用Laravel 11重写likeadmin前后端分离全栈开发框架</h3>
 <p align="center">
-<a href="#"><img src="https://img.shields.io/badge/Laravel-11-ef6763"></a>
+	<img alt="logo" src="./doc/image/logo-small.png">
+</p>
+<h1 align="center" style="margin: 10px 0 10px; font-weight: bold;">Luna AI换脸【Lite版】</h1>
+<h3 align="center" style="margin-bottom: 10px;">快速成型的企业级AI换脸解决方案</h3>
+<p align="center">
 <a href="#"><img src="https://img.shields.io/badge/PHP-8.2-8892bf"></a>
-<a href="#"><img src="https://img.shields.io/badge/MySQL-8.0-3e6e93"></a>
+<a href="#"><img src="https://img.shields.io/badge/Laravel-11-f64f3c"></a>
+<a href="#"><img src="https://img.shields.io/badge/MySQL-8.0-43779e"></a>
+<a href="#"><img src="https://img.shields.io/badge/Vue.js-3-4eb883"></a>
+<a href="#"><img src="https://img.shields.io/badge/TypeScript-5-294e80"></a>
+<a href="#"><img src="https://img.shields.io/badge/Element Plus-2.8-409eff"></a>
+<a href="#"><img src="https://img.shields.io/badge/Vite-5-a051f9"></a>
+<a href="#"><img src="https://img.shields.io/badge/uniapp-3-2b9639"></a>
+</p>
 
-来源项目：[likeadmin_php](https://github.com/likeadmin-likeshop/likeadmin_php) ( v1.9.4 / bfba16334f)
+## 为什么有Lite版本？
 
-当前进度：
-█████████░ 99%
 
-技术栈：
-- PHP 8.0 => PHP 8.2
-- ThinkPHP 8 => Laravel 11
-- 管理后台：Vue3 + TypeScript + ElementPlus UI + TailwindCSS
-- 小程序：Vue3 + TypeScript + Uniapp + TailwindCSS
-- PC端：Vue3 + Nuxt
 
-### 设计目标
+## 简介
 
-1. 完全兼容likeadmin_php数据库表结构、API接口路由等
+- 基础能力：AI换脸、AI写真、AI证件照、恶搞表情包、网红氛围感换脸
+- 算法能力：内置商汤科技换脸算法API，可自行对接其他第三方模型
+- 数字分身：仅需1张正脸照制作数字分身，用户可管理删除
+- 模板管理：支持自定义模板底图，设置模板排序，页面装修
+- TODO 付费方式：支持微信小程序支付，充值购买点数
+- TODO 多人换脸：支持多人合影、情侣合照、明星合影、宠物合影
 
-2. 无需改动任何一行前端代码/任何一个表结构，即可无缝迁移到Laravel
+## 演示
 
-### 优先级排期
+<table>
+    <tr>
+        <td width="30%">
+            <img src="./doc/image/qrcode.jpg" alt="小程序演示"/>
+            <p align="center">微信小程序</p>
+        </td>
+        <td>
+            <p>
+                <a href="https://luna-swapping-lite.sodair.top/admin">管理后台演示环境</a> 账号密码：demo / 123456
+            </p>
+            <p>
+                基于 <a href="https://github.com/1nFrastr/likeadmin_laravel">Likeadmin-Laravel</a> 全栈开发框架构建
+            </p>
+        </td>
+    </tr>
+</table>
 
-- [x] 代码结构迁移：遵循 PSR-4
-- [x] 核心迁移：路由、中间件、响应封装器
-- [x] 基类改造：列表查询类、缓存类、多场景验证器
-- [x] 管理端 API - 管理员登录
-- [x] 管理端 API - 工作台数据、后台基础配置接口
-- [x] 管理端 API - 管理员/角色/菜单权限管理
-- [x] 权限控制中间件
-- [x] 数据表格导出
-- [x] 静态资源放到项目工程
-- [x] 数据库模型兼容TP框架：软删除、创建时间、更新时间
-- [x] 管理端 - 文章资讯管理
-- [x] 移动端 - 账号登录注册
-- [x] 移动端 - 第三方登录：手机验证码登录
-- [x] 系统设置 - 用户设置、网站设置
-- [x] 素材中心 - 文件管理
-- [x] 移动端 - 账号信息变更：绑定手机号、修改密码等
-- [x] 移动端 - 文章资讯
-- [x] 管理端 - 部门岗位管理
-- [x] 操作日志Listener等监听器逻辑迁移
-- [x] 装修管理
-- [x] 代码生成器
-- [x] 安装引导UI、Release发行版
-- [ ] 渠道设置：微信小程序配置✔、公众号菜单管理✔、公众号消息回复逻辑✔、h5设置✔、开放平台TODO
-- [ ] 第三方登录：微信小程序授权登录✔、H5公众号授权登录✔、PC端扫码登录TODO（需配合开放平台）
-- [ ] 存储引擎 - 文件上传：本地存储✔、阿里云、腾讯云、七牛云
-- [ ] 钱包充值✔、微信支付（小程序支付✔、公众号/H5付款暂未测试）、支付宝支付TODO
+### 后台演示图
 
-### API接口迁移工作清单：
+<table>
+	<tr>
+        <td width="20%">换脸模板</td>
+        <td><img src="./doc/image/show/swap-template.png"/></td>
+    </tr>
+	<tr>
+        <td>换脸记录</td>
+        <td><img src="./doc/image/show/swap-record.png"/></td>
+    </tr>
+	<tr>
+        <td>页面装修</td>
+        <td><img src="./doc/image/show/page_config.png"/></td>
+    </tr>
+	<tr>
+        <td>安装引导页</td>
+        <td><img src="./doc/image/show/install_wizard.png"/></td>
+    </tr>
+</table>
 
-| **管理后台**   | 进度 | **移动端**     | 进度 | **PC端**       | 进度 |
-|----------------|----|----------------|----|----------------|------|
-| 工作台 | ✔ | 登录注册 | ✔ | 首页数据 | ✔ |
-| 登录 | ✔ | 文章管理 | ✔ | 网站配置 | ✔ |
-| 装修管理 | ✔ | 上传管理 | ✔ | 资讯中心 | ✔ |
-| 文章资讯 | ✔ | 用户管理 | ✔ | 文章详情 | ✔ |
-| 消息通知 | ✔ | 用户钱包 | ✔ | 扫码登录 |      |
-| 渠道设置 | ✔ | 支付相关 | ✔ |                |      |
-| 组织管理 | ✔ | 其他 | ✔ |                |      |
-| 权限管理 | ✔ |                |    |                |      |
-| 系统设置 |    |                |    |                |      |
-| 文件管理 | ✔ |                |    |                |      |
-| 存储引擎 |    |                |    |                |      |
-| 开发工具 | ✔ |                |    |                |      |
-| 用户管理 | ✔ |                |    |                |      |
-| 通用数据 | ✔ |                |    |                |      |
-| 营销应用 | ✔ |                |    |                |      |
-| 财务管理 | ✔ |                |    |                |      |
+## 部署教程
 
-### 宝塔部署指南
+**说明**
 
-伪静态规则
-    
- ```
-location / {
-  try_files $uri $uri/ /index.php?$query_string;
-}
+Lite版本的前后端代码分开3个仓库单独维护，以服务端项目作为主仓库。
 
-location /mobile {
-  try_files $uri $uri/ /mobile/index.html;
-}
+每一个版本的安装包只会在主仓库Release页面发布更新。
 
-location /pc {
-  try_files $uri $uri/ /pc/index.html;
-}
-```
+Release发行版打包了前后端构建之后的完整源码，提供傻瓜式的安装引导Web页面，不再需要自己打包各端源码！
 
-移除PHP禁用函数symlink。然后执行命令：`php artisan storage:link`
+**关联项目**
 
-该命令创建了一个软链接到由public/storage指向storage/app/public目录，使后者目录下的文件可以通过HTTP访问。
+主仓库 - 服务端源码： [luna-lite-server](https://github.com/loxi-opensource/luna-lite-server)
+
+关联仓库 - 小程序源码： [luna-lite-uniapp](https://github.com/loxi-opensource/luna-lite-uniapp)
+
+关联仓库 - 管理后台源码： [luna-lite-admin](https://github.com/loxi-opensource/luna-lite-admin)
+
+算法服务：需付费购买第三方API服务，目前已对接商汤科技换脸API
+
+## 常见问题
+
+换脸算法开源吗？
+- 这是应用层代码，可自行接入第三方换脸API
+
+平均出图时间要多久？
+- 生成1张图效果图大概需要5秒左右
+
+换脸内容有什么限制吗？
+- 不允许上传涉黄、涉政、明星、公众人物等不合规内容
+
+用户可以自定义目标底图吗？
+- 不允许用户自行上传换脸目标图，但系统管理员可以在后台上架管理换脸模板
+
+## 联系方式
+
+<table>
+<tr>
+    <td>
+        <img src="./doc/image/wechat-contact-crop.jpg" alt="qrcode"/>
+    </td>
+</tr>
+</table>
