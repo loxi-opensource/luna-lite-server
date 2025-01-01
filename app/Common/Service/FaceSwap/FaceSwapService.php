@@ -21,8 +21,8 @@ class FaceSwapService
 
     public function __construct()
     {
-        $this->ak = ConfigService::get('faceSwapKey', 'ak');
-        $this->sk = ConfigService::get('faceSwapKey', 'sk');
+        $this->ak = ConfigService::get('faceSwapKey', 'ak', '');
+        $this->sk = ConfigService::get('faceSwapKey', 'sk', '');
 
         if (empty($this->ak) || empty($this->sk)) {
             throw new \InvalidArgumentException('请先配置算法服务的密钥');
