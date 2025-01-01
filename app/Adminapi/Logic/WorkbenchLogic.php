@@ -98,9 +98,10 @@ class WorkbenchLogic extends BaseLogic
             'name' => ConfigService::get('website', 'name'),
             'based' => 'vue3.x、ElementUI、MySQL',
             'channel' => [
-                'website' => 'https://www.likeadmin.cn',
-                'gitee' => 'https://gitee.com/likeadmin/likeadmin_php',
-            ]
+                'website' => 'https://www.sodair.top/',
+                'github' => 'https://github.com/loxi-opensource/luna-lite-server',
+                'framework' => 'https://github.com/1nFrastr/likeadmin_laravel',
+             ]
         ];
     }
 

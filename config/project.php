@@ -1,7 +1,7 @@
 <?php
 return [
     // 系统版本号
-    'version' => '1.9.4',
+    'version' => '1.9.4-alpha.1',
 
     // 官网
     'website' => [
@@ -10,11 +10,11 @@ return [
         'login_image' => 'resource/image/adminapi/default/login_image.png',
         'web_logo' => 'resource/image/adminapi/default/web_logo.jpg', // 网站logo
         'web_favicon' => 'resource/image/adminapi/default/web_favicon.ico', // 网站图标
-        'shop_name' => 'likeadmin', // 商城名称
+        'shop_name' => 'Likeadmin-Laravel', // 商城名称
         'shop_logo' => 'resource/image/adminapi/default/shop_logo.png', // 商城图标
         'pc_logo' => 'resource/image/adminapi/default/pc_logo.png', // pc_logo
         'pc_ico' => 'resource/image/adminapi/default/web_favicon.ico', // pc_ico
-        'pc_title' => 'likeadmin', // PC网站标题
+        'pc_title' => 'Likeadmin-Laravel', // PC网站标题
         'h5_favicon' => 'resource/image/adminapi/default/web_favicon.ico', // 网站图标
     ],
 
@@ -29,7 +29,7 @@ return [
     ],
 
     // 唯一标识，密码盐、路径加密等
-    'unique_identification' => env('PROJECT_UNIQUE_IDENTIFICATION', 'likeadmin'),
+    'unique_identification' => env('PROJECT_UNIQUE_IDENTIFICATION', 'Likeadmin-Laravel'),
 
     // 后台管理员token（登录令牌）配置
     'admin_token' => [
