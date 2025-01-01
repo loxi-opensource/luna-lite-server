@@ -2,7 +2,7 @@
 	<img alt="logo" src="./doc/image/logo-small.png">
 </p>
 <h1 align="center" style="margin: 10px 0 10px; font-weight: bold;">Luna AI换脸【Lite版】</h1>
-<h3 align="center" style="margin-bottom: 10px;">快速成型的企业级AI换脸解决方案</h3>
+<h3 align="center" style="margin-bottom: 10px;">快速、轻量的AI换脸解决方案</h3>
 <p align="center">
 <a href="#"><img src="https://img.shields.io/badge/PHP-8.2-8892bf"></a>
 <a href="#"><img src="https://img.shields.io/badge/Laravel-11-f64f3c"></a>
