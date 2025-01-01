@@ -3,6 +3,7 @@
 namespace App\Common\Service\FaceSwap;
 
 use App\Common\Service\Aliyun\ImageCropService;
+use App\Common\Service\ConfigService;
 use App\Common\Types\Swap\GenerateParams;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Arr;
@@ -14,22 +15,17 @@ use Illuminate\Support\Str;
 class FaceSwapService
 {
     private string $baseUrl;
-    private string $provider;
+    private string $provider = 'ST'; // 商汤科技
     private string $ak;
     private string $sk;
 
     public function __construct()
     {
-        $this->provider = Env::get('FACE_SWAP_PROVIDER');
-        if ($this->provider !== 'ST') {
-            throw new \InvalidArgumentException('Unsupported provider. Please check your configuration.');
-        }
-
-        $this->ak = Env::get('FACE_SWAP_AK');
-        $this->sk = Env::get('FACE_SWAP_SK');
+        $this->ak = ConfigService::get('faceSwapKey', 'ak');
+        $this->sk = ConfigService::get('faceSwapKey', 'sk');
 
         if (empty($this->ak) || empty($this->sk)) {
-            throw new \InvalidArgumentException('AK or SK is missing. Please check your configuration.');
+            throw new \InvalidArgumentException('请先配置算法服务的密钥');
         }
 
         $this->baseUrl = 'https://mhapi.sensetime.com/v1/face';
