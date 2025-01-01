@@ -41,7 +41,7 @@ class installModel
      */
     public function checkPHP()
     {
-        return $result = version_compare(PHP_VERSION, '8.0.0') >= 0 ? 'ok' : 'fail';
+        return $result = version_compare(PHP_VERSION, '8.2.0') >= 0 ? 'ok' : 'fail';
     }
 
     /**
@@ -62,6 +62,11 @@ class installModel
     public function checkPDOMySQL()
     {
         return $result = extension_loaded('pdo_mysql') ? 'ok' : 'fail';
+    }
+
+    public function checkRedis()
+    {
+        return $result = extension_loaded('redis') ? 'ok' : 'fail';
     }
 
     /**
@@ -290,6 +295,63 @@ class installModel
     {
         return file_exists($this->getAppRoot() . '/config/install.lock');
     }
+
+    public function checkRedisConfig($connectionInfo)
+    {
+        $return = new stdClass();
+        $return->result = 'ok';
+
+        try {
+            // 创建 Redis 实例
+            $redis = new Redis();
+
+            // 尝试连接，设置超时时间为 2 秒
+            $connected = $redis->connect(
+                $connectionInfo['redis_host'],
+                $connectionInfo['redis_port'],
+                2
+            );
+
+            if (!$connected) {
+                $return->result = 'fail';
+                $return->error = 'Redis连接失败，请检查主机和端口配置';
+                return $return;
+            }
+
+            // 如果设置了密码，尝试认证
+            if (!empty($connectionInfo['redis_password'])) {
+                $auth = $redis->auth($connectionInfo['redis_password']);
+                if (!$auth) {
+                    $return->result = 'fail';
+                    $return->error = 'Redis密码认证失败';
+                    return $return;
+                }
+            }
+
+            // 测试连接是否可用
+            $ping = $redis->ping();
+            if ($ping !== '+PONG' && $ping !== true) {
+                $return->result = 'fail';
+                $return->error = 'Redis服务器无响应';
+                return $return;
+            }
+
+            // 获取 Redis 版本信息
+//            $info = $redis->info();
+//            $return->version = $info['redis_version'];
+
+            // 关闭连接
+            $redis->close();
+
+        } catch (Exception $e) {
+            $return->result = 'fail';
+            $return->error = 'Redis连接错误: ' . $e->getMessage();
+            return $return;
+        }
+
+        return $return;
+    }
+
 
     /**
      * Notes: 取得配置信息

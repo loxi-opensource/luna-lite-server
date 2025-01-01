@@ -40,6 +40,9 @@ class FreddyEnv
             '{DB_PASSWORD}' => $databaseEnv['password'],
             '{DB_PORT}' => $databaseEnv['port'],
             '{DB_PREFIX}' => $databaseEnv['prefix'],
+            '{REDIS_HOST}' => $databaseEnv['redis_host'],
+            '{REDIS_PASSWORD}' => $databaseEnv['redis_password'],
+            '{REDIS_PORT}' => $databaseEnv['redis_port'],
         ];
         global $uniqueSalt;
         $toReplace = array_merge($applyDbEnv, ['{PROJECT_UNIQUE_IDENTIFICATION}' => $uniqueSalt]);

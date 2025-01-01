@@ -233,9 +233,15 @@
                                             <tbody>
                                                 <tr>
                                                     <td>PHP版本</td>
-                                                    <td>大于8.0</td>
+                                                    <td>>=8.2</td>
                                                     <?php echo $modelInstall->correctOrFail($modelInstall->checkPHP()) ?>
-                                                    <td>建议使用PHP8.0.8版本</td>
+                                                    <td>建议使用PHP8.2及以上版本</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>redis</td>
+                                                    <td>支持 (强烈建议支持)</td>
+                                                    <?php echo $modelInstall->correctOrFail($modelInstall->checkRedis()) ?>
+                                                    <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td>PDO_MYSQL</td>
@@ -394,6 +400,30 @@
                                         </div>
                                         <div>
                                             <input type="text" name="prefix" value="<?= $post['prefix'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="form-box-item">
+                                        <div class="form-desc">
+                                            Redis主机
+                                        </div>
+                                        <div>
+                                            <input type="text" name="redis_host" value="<?= $post['redis_host'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="form-box-item">
+                                        <div class="form-desc">
+                                            Redis端口
+                                        </div>
+                                        <div>
+                                            <input type="text" name="redis_port" value="<?= $post['redis_port'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="form-box-item">
+                                        <div class="form-desc">
+                                            Redis密码
+                                        </div>
+                                        <div>
+                                            <input type="text" name="redis_password" value="<?= $post['redis_password'] ?>" />
                                         </div>
                                     </div>
                                 </div>

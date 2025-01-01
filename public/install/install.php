@@ -39,6 +39,9 @@ $post = [
     'prefix' => $_POST['prefix'] ?? 'la_',
     'import_test_data' => $_POST['import_test_data'] ?? 'off',
     'clear_db' => $_POST['clear_db'] ?? 'off',
+    'redis_host' => $_POST['redis_host'] ?? '127.0.0.1',
+    'redis_port' => $_POST['redis_port'] ?? '6379',
+    'redis_password' => $_POST['redis_password'] ?? '',
 ];
 
 $message = '';
@@ -46,9 +49,20 @@ $message = '';
 // 检查数据库正确性
 if ($step == 4) {
     $canNext = true;
-    if (empty($post['prefix'])) {
+
+    // 检查redis配置
+    if (empty($post['redis_host'])) {
+        $canNext = false;
+        $message = 'Redis地址不能为空';
+    } elseif (empty($post['redis_port'])) {
+        $canNext = false;
+        $message = 'Redis端口不能为空';
+    } elseif (empty($post['prefix'])) {
         $canNext = false;
         $message = '数据表前缀不能为空';
+    } elseif (empty($post['password'])) {
+        $canNext = false;
+        $message = '数据表密码不能为空';
     } elseif ($post['admin_user'] == '') {
         $canNext = false;
         $message = '请填写管理员用户名';
@@ -59,30 +73,37 @@ if ($step == 4) {
         $canNext = false;
         $message = '两次密码不一致';
     } else {
-        // 检查 数据库信息
-        $result = $modelInstall->checkConfig($post['name'], $post);
+        // 检查 REDIS连接
+        $result = $modelInstall->checkRedisConfig($post);
         if ($result->result == 'fail') {
             $canNext = false;
             $message = $result->error;
-        }
-
-        // 导入测试数据
-        if ($canNext == true && $post['import_test_data'] == 'on') {
-            if (!$modelInstall->importDemoData()) {
+        } else {
+            // 检查 数据库信息
+            $result = $modelInstall->checkConfig($post['name'], $post);
+            if ($result->result == 'fail') {
                 $canNext = false;
-                $message = '导入测试数据错误';
+                $message = $result->error;
             }
-        }
 
-        // 写配置文件
-        if ($canNext) {
-            $freddyEnv->putEnv($envFilePath, $post);
-            $modelInstall->mkLockFile();
-        }
+            // 导入测试数据
+            if ($canNext == true && $post['import_test_data'] == 'on') {
+                if (!$modelInstall->importDemoData()) {
+                    $canNext = false;
+                    $message = '导入测试数据错误';
+                }
+            }
 
-        // 恢复admin和index入口
-        if ($canNext) {
-            $modelInstall->restoreIndexLock();
+            // 写配置文件
+            if ($canNext) {
+                $freddyEnv->putEnv($envFilePath, $post);
+                $modelInstall->mkLockFile();
+            }
+
+            // 恢复admin和index入口
+            if ($canNext) {
+                $modelInstall->restoreIndexLock();
+            }
         }
     }
 
