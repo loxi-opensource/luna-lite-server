@@ -74,9 +74,9 @@ class OperationLogMiddleware
         $systemLog->account = $adminInfo['account'] ?? '';
         $systemLog->url = $request->url();
         $systemLog->type = $request->method();
-        $systemLog->params = json_encode($params, true);
+        $systemLog->params = mb_substr(json_encode($params, JSON_UNESCAPED_UNICODE), 0, 1000);
         $systemLog->ip = $request->ip();
-        $systemLog->result = $response->getContent();
+        $systemLog->result = mb_substr($response->getContent(), 0, 1000);
         $systemLog->create_time = time();
         $systemLog->save();
 
