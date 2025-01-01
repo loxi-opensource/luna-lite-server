@@ -384,6 +384,13 @@ class installModel
         /* Get mysql version. */
         $version = $this->getMysqlVersion();
 
+        // 数据库版本检测，必须大于等于8.0
+        if (version_compare($version, '8.0', '<')) {
+            $return->result = 'fail';
+            $return->error = '数据库版本必须不低于8.0';
+            return $return;
+        }
+
         /* check mysql sql_model */
 //        if(!$this->checkSqlMode($version)) {
 //            $return->result = 'fail';
