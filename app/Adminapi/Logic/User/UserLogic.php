@@ -19,7 +19,8 @@ class UserLogic extends BaseLogic
         $field = [
             'id', 'sn', 'account', 'nickname', 'avatar', 'real_name',
             'sex', 'mobile', 'create_time', 'login_time', 'channel',
-            'user_money',
+            // 兼容前端，使用作图余额作为用户余额
+            DB::raw('balance_draw as user_money')
         ];
 
         $user = User::select($field)->find($userId);
@@ -45,22 +46,22 @@ class UserLogic extends BaseLogic
         try {
             $user = User::find($params['user_id']);
             if (AccountLogEnum::INC == $params['action']) {
-                $user->user_money += $params['num'];
+                $user->balance_draw += $params['num'];
                 $user->save();
                 AccountLogLogic::add(
-                    $user->id,
-                    AccountLogEnum::UM_INC_ADMIN,
+                    $user,
+                    AccountLogEnum::DRAW_INC_ADMIN,
                     AccountLogEnum::INC,
                     $params['num'],
                     '',
                     $params['remark'] ?? ''
                 );
             } else {
-                $user->user_money -= $params['num'];
+                $user->balance_draw -= $params['num'];
                 $user->save();
                 AccountLogLogic::add(
-                    $user->id,
-                    AccountLogEnum::UM_DEC_ADMIN,
+                    $user,
+                    AccountLogEnum::DRAW_DEC_ADMIN,
                     AccountLogEnum::DEC,
                     $params['num'],
                     '',
