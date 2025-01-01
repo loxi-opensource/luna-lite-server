@@ -1,20 +1,20 @@
 <?php
 return [
     // 系统版本号
-    'version' => '1.9.4-alpha.1',
+    'version' => 'LunaAI换脸 / Lite版本 / v1.0.0',
 
     // 官网
     'website' => [
-        'name' => env('project.web_name', 'Likeadmin-Laravel'), // 网站名称
+        'name' => env('project.web_name', 'Luna-Swapping'), // 网站名称
         'url' => env('project.web_url', 'www.likeadmin.cn/'), // 网站地址
         'login_image' => 'resource/image/adminapi/default/login_image.png',
         'web_logo' => 'resource/image/adminapi/default/web_logo.jpg', // 网站logo
         'web_favicon' => 'resource/image/adminapi/default/web_favicon.ico', // 网站图标
-        'shop_name' => 'Likeadmin-Laravel', // 商城名称
+        'shop_name' => 'Luna-Swapping', // 商城名称
         'shop_logo' => 'resource/image/adminapi/default/shop_logo.png', // 商城图标
         'pc_logo' => 'resource/image/adminapi/default/pc_logo.png', // pc_logo
         'pc_ico' => 'resource/image/adminapi/default/web_favicon.ico', // pc_ico
-        'pc_title' => 'Likeadmin-Laravel', // PC网站标题
+        'pc_title' => 'Luna-Swapping', // PC网站标题
         'h5_favicon' => 'resource/image/adminapi/default/web_favicon.ico', // 网站图标
     ],
 
