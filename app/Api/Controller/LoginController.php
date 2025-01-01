@@ -125,7 +125,7 @@ class LoginController extends BaseApiController
      */
     public function getScanCode()
     {
-        $redirectUri = $this->request->get('url/s');
+        $redirectUri = $this->request->get('url');
         $result = LoginLogic::getScanCode($redirectUri);
         if (false === $result) {
             return $this->fail(LoginLogic::getError() ?? '未知错误');

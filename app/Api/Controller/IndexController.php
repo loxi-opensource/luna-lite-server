@@ -34,7 +34,7 @@ class IndexController extends BaseApiController
      */
     public function policy()
     {
-        $type = $this->request->get('type/s', '');
+        $type = $this->request->get('type', '');
         $result = IndexLogic::getPolicyByType($type);
         return $this->data($result);
     }
