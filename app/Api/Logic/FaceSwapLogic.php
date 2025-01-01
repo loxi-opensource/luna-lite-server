@@ -124,4 +124,11 @@ class FaceSwapLogic extends DrawLogic
         $lists = Arr::get($data->toArray(), 'data', []);
         return $lists;
     }
+
+    static function removeRecord($userId, $recordId)
+    {
+        $record = SwapRecord::query()->where('user_id', $userId)->findOrFail($recordId);
+        $record->delete();
+        return true;
+    }
 }

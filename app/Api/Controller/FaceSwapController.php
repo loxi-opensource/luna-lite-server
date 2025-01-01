@@ -64,4 +64,16 @@ class FaceSwapController extends BaseApiController
         return $this->success("success", compact('lists'));
     }
 
+    // 删除用户作图记录
+    public function removeRecord(Request $request)
+    {
+        $params = (new FaceSwapValidate())->post()->goCheck('removeRecord');
+        $result = FaceSwapLogic::removeRecord($this->getUserId(), $params['id']);
+        if ($result === false) {
+            $errMsg = FaceSwapLogic::getError();
+            return $this->fail($errMsg);
+        }
+
+        return $this->success("success");
+    }
 }

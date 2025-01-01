@@ -13,6 +13,9 @@ class FaceSwapValidate extends BaseValidate
                 'template_id' => 'required|exists:swap_template,id',
                 'avatar_id' => 'required|exists:digital_avatar,id',
             ],
+            'removeRecord' => [
+                'id' => 'required|exists:swap_record,id',
+            ],
         ];
 
         return $rules[$scene] ?? [];
