@@ -62,6 +62,10 @@ class Qcloud extends Server
         }
     }
 
+    public function syncDir($localDir, $targetDir)
+    {
+    }
+
     /**
      * notes: 抓取远程资源(最大支持上传5G文件)
      * @param $url

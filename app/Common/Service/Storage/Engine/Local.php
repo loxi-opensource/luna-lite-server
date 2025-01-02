@@ -28,6 +28,10 @@ class Local extends Server
         return true;
     }
 
+    public function syncDir($localDir, $targetDir)
+    {
+    }
+
     public function fetch($url, $key = null)
     {
     }

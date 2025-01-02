@@ -1,7 +1,7 @@
 <?php
 return [
-    // 系统版本号
-    'version' => 'LunaAI换脸 / Lite版本 / v1.0.0',
+    // 系统版本号（不能出现中文）
+    'version' => 'Lite v1.0.0',
 
     // 官网
     'website' => [

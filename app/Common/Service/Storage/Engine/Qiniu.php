@@ -62,6 +62,10 @@ class Qiniu extends Server
         }
     }
 
+    public function syncDir($localDir, $targetDir)
+    {
+    }
+
     /**
      * @notes 抓取远程资源
      * @param $url
