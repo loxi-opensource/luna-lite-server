@@ -99,7 +99,7 @@ php artisan app:sync-resource-to-oss
 
 ## 7. 配置换脸算法KEY
 
-请前往<a href="https://signin.sensecore.cn/?login_challenge" target="_blank">《商汤科技-日日新开放平台》</a>注册账号并创建应用，获取应用ID和应用密钥。
+请前往 [《商汤科技-日日新开放平台》](https://signin.sensecore.cn/?login_challenge) 注册账号并创建应用，获取应用ID和应用密钥。
 
 目前不支持自主购买，需在申请AK和SK之后联系他们的商务对接同学开通。详情参考[飞书文档](https://iwqiw8uo3k0.feishu.cn/docx/ElnKdsKH1oQsA5x5X2ocFTcTnLg)
 
