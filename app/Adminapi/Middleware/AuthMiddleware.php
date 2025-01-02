@@ -23,9 +23,9 @@ class AuthMiddleware
 
         $adminInfo = $request->attributes->get('adminInfo');
         // 检查IP地址
-        if ($adminInfo['login_ip'] !== $request->ip()) {
-            return JsonService::fail('IP 地址发生变化，请重新登录', [], -1);
-        }
+//        if ($adminInfo['login_ip'] !== $request->ip()) {
+//            return JsonService::fail('IP 地址发生变化，请重新登录', [], -1);
+//        }
 
         // 系统默认超级管理员，无需权限验证
         if ($adminInfo['root'] === 1) {
