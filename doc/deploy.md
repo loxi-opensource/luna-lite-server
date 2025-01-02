@@ -25,7 +25,9 @@
 
 ## 3. 下载项目代码
 
-到项目 [Release页面]() 下载最新安装包到服务器，解压到指定目录如 `/www/wwwroot/luna-lite-server`
+到项目 [Release页面](https://github.com/loxi-opensource/luna-lite-server/releases) 下载最新安装包到服务器，解压到指定目录如 `/www/wwwroot/luna-lite-server`
+
+<img src="./image/deploy/release-page.png" width="60%"/>
 
 ## 4. 配置Nginx
 1. 网站域名创建（确保域名已经解析到服务器IP地址）
