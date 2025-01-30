@@ -20,13 +20,14 @@ class RechargeLists extends BaseAdminDataLists implements ListsSearchInterface, 
     public function setExcelFields(): array
     {
         return [
-            'sn' => '充值单号',
             'nickname' => '用户昵称',
-            'order_amount' => '充值金额',
+            'sn' => '订单号',
+            'order_amount' => '订单金额',
+            'recharge_package_description' => '充值套餐',
             'pay_way_text' => '支付方式',
             'pay_status_text' => '支付状态',
-            'pay_time' => '支付时间',
             'create_time' => '下单时间',
+            'pay_time' => '支付时间',
         ];
     }
 
@@ -82,7 +83,7 @@ class RechargeLists extends BaseAdminDataLists implements ListsSearchInterface, 
             ->select(
                 'ro.id', 'ro.sn', 'ro.order_amount', 'ro.pay_way', 'ro.pay_time',
                 'ro.pay_status', 'ro.create_time', 'ro.refund_status',
-                'u.avatar', 'u.nickname', 'u.account'
+                'u.avatar', 'u.nickname', 'u.account', 'ro.recharge_package_snapshot'
             )
             ->orderBy('ro.id', 'desc')
             ->limit($this->limitLength)
@@ -95,6 +96,11 @@ class RechargeLists extends BaseAdminDataLists implements ListsSearchInterface, 
             $item->create_time = date('Y-m-d H:i:s', $item->create_time);
             $item->pay_status_text = PayEnum::getPayStatusDesc($item->pay_status);
             $item->pay_way_text = PayEnum::getPayDesc($item->pay_way);
+            $item->recharge_package_snapshot = json_decode($item->recharge_package_snapshot, true);
+            $item->recharge_package_description =
+                $item->recharge_package_snapshot
+                    ? $item->recharge_package_snapshot['name'] . '(' . $item->recharge_package_snapshot['describe'] . ')'
+                    : '';
             return (array)$item;
         })->toArray();
     }
