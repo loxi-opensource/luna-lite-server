@@ -28,9 +28,9 @@ class AdjustUserMoney extends BaseValidate
                         return;
                     }
 
-                    $surplusMoney = $user->user_money - $value;
+                    $surplusMoney = $user->balance_draw - $value;
                     if ($surplusMoney < 0) {
-                        return $fail('用户可用余额仅剩' . $user->user_money);
+                        return $fail('用户可用余额仅剩' . $user->balance_draw);
                     }
                 },
             ],

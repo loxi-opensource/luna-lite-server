@@ -10,6 +10,7 @@ use App\Common\Model\Refund\RefundRecord;
 use App\Common\Model\User\User;
 use App\Common\Validate\BaseValidate;
 use Closure;
+use Illuminate\Support\Arr;
 
 class RechargeRefundValidate extends BaseValidate
 {
@@ -34,7 +35,8 @@ class RechargeRefundValidate extends BaseValidate
                         }
 
                         $user = User::find($order->user_id);
-                        if ($user && $user->user_money < $order->order_amount) {
+                        $orderDrawNumber = Arr::get($order->recharge_package_snapshot, 'draw_number');
+                        if ($user && $user->balance_draw < $orderDrawNumber) {
                             return $fail('退款失败:用户余额已不足退款金额');
                         }
                     },
@@ -56,7 +58,8 @@ class RechargeRefundValidate extends BaseValidate
                         $order = RechargeOrder::find($record->order_id);
                         $user = User::find($record->user_id);
 
-                        if ($user && $user->user_money < $order->order_amount) {
+                        $orderDrawNumber = Arr::get($order->recharge_package_snapshot, 'draw_number');
+                        if ($user && $user->balance_draw < $orderDrawNumber) {
                             return $fail('退款失败:用户余额已不足退款金额');
                         }
                     },

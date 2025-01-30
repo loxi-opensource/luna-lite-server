@@ -12,6 +12,7 @@ use App\Common\Model\Recharge\RechargeOrder;
 use App\Common\Model\Refund\RefundRecord;
 use App\Common\Model\User\User;
 use App\Common\Service\ConfigService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -74,14 +75,14 @@ class RechargeLogic extends BaseLogic
             User::query()->where('id', $order->user_id)
                 ->decrement('total_recharge_amount', $order->order_amount);
             User::query()->where('id', $order->user_id)
-                ->decrement('user_money', $order->order_amount);
+                ->decrement('balance_draw', Arr::get($order->recharge_package_snapshot, 'draw_number'));
 
             // 记录日志
             AccountLogLogic::add(
-                $order->user_id,
-                AccountLogEnum::UM_DEC_RECHARGE_REFUND,
+                User::findOrFail($order->user_id),
+                AccountLogEnum::DRAW_DEC_RECHARGE_REFUND,
                 AccountLogEnum::DEC,
-                $order->order_amount,
+                Arr::get($order->recharge_package_snapshot, 'draw_number'),
                 $order->sn,
                 '充值订单退款'
             );
