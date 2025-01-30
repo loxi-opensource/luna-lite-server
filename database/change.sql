@@ -17,3 +17,5 @@ CREATE TABLE `lite_recharge_package`
 
 alter table lite_recharge_order
     add column `recharge_package_snapshot` json COMMENT '充值套餐快照';
+
+# TODO 充值套餐-菜单SQL
