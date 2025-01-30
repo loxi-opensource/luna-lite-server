@@ -23,14 +23,18 @@ class RechargeLogic extends BaseLogic
     public static function recharge(array $params): array|false
     {
         try {
+            $rechargePackage = RechargePackage::query()->findOrFail($params['package_id']);
+
             $data = [
                 'sn' => generate_sn(RechargeOrder::class, 'sn'),
                 'order_terminal' => $params['terminal'],
                 'user_id' => $params['user_id'],
                 'pay_status' => PayEnum::UNPAID,
-                'order_amount' => $params['money'], // TODO 从充值计划中获取
+                'order_amount' => $rechargePackage->sell_price,
+                'recharge_package_snapshot' => $rechargePackage,
             ];
-            $order = RechargeOrder::create($data);
+            $order = new RechargeOrder();
+            $order->fill($data)->save();
 
             return [
                 'order_id' => (int)$order->id,

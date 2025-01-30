@@ -17,6 +17,10 @@ class RechargeOrder extends BaseModel
 
     protected $appends = ['pay_way_text', 'pay_status_text'];
 
+    public $casts = [
+        'recharge_package_snapshot' => 'array'
+    ];
+
     protected function getDeletedAtColumn()
     {
         return 'delete_time';

@@ -6,6 +6,7 @@ use App\Common\Enum\PayEnum;
 use App\Common\Enum\User\AccountLogEnum;
 use App\Common\Model\Recharge\RechargeOrder;
 use App\Common\Model\User\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -45,13 +46,13 @@ class PayNotifyLogic extends BaseLogic
         $user = User::findOrFail($order->user_id);
 
         $user->increment('total_recharge_amount', $order->order_amount);
-        $user->increment('user_money', $order->order_amount);
+        $user->increment('balance_draw', Arr::get($order->recharge_package_snapshot, 'draw_number'));
 
         AccountLogLogic::add(
-            $order->user_id,
-            AccountLogEnum::UM_INC_RECHARGE,
+            $user,
+            AccountLogEnum::DRAW_INC_RECHARGE,
             AccountLogEnum::INC,
-            $order->order_amount,
+            Arr::get($order->recharge_package_snapshot, 'draw_number'),
             $order->sn,
             '用户充值'
         );
