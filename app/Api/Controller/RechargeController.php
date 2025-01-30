@@ -45,5 +45,13 @@ class RechargeController extends BaseApiController
         return $this->data(RechargeLogic::config($this->getUserId()));
     }
 
+    /**
+     * @notes 充值套餐列表
+     */
+    public function package()
+    {
+        $result = RechargeLogic::getAllPackages();
+        return $this->data($result);
+    }
 
 }

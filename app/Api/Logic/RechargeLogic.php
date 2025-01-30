@@ -3,8 +3,10 @@
 namespace App\Api\Logic;
 
 use App\Common\Enum\PayEnum;
+use App\Common\Enum\YesNoEnum;
 use App\Common\Logic\BaseLogic;
 use App\Common\Model\Recharge\RechargeOrder;
+use App\Common\Model\RechargePackage;
 use App\Common\Model\User\User;
 use App\Common\Service\ConfigService;
 use Throwable;
@@ -26,7 +28,7 @@ class RechargeLogic extends BaseLogic
                 'order_terminal' => $params['terminal'],
                 'user_id' => $params['user_id'],
                 'pay_status' => PayEnum::UNPAID,
-                'order_amount' => $params['money'],
+                'order_amount' => $params['money'], // TODO 从充值计划中获取
             ];
             $order = RechargeOrder::create($data);
 
@@ -57,5 +59,13 @@ class RechargeLogic extends BaseLogic
         ];
     }
 
+    public static function getAllPackages()
+    {
+        return RechargePackage::where(['status' => YesNoEnum::YES])
+            ->orderBy('sort', 'desc')
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
+    }
 }
 
