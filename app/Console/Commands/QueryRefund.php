@@ -7,7 +7,7 @@ use App\Common\Enum\RefundEnum;
 use App\Common\Model\Recharge\RechargeOrder;
 use App\Common\Model\Refund\RefundLog;
 use App\Common\Model\Refund\RefundRecord;
-use App\Common\Service\Pay\WeChatPayService;
+use App\Common\Service\Pay\WechatPayService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -96,7 +96,7 @@ class QueryRefund extends Command
 
     private function checkWechatRefund($orderTerminal, $refundLogSn)
     {
-        $result = (new WeChatPayService($orderTerminal))->queryRefund($refundLogSn);
+        $result = (new WechatPayService($orderTerminal))->queryRefund($refundLogSn);
 
         if (isset($result['status']) && $result['status'] === 'SUCCESS') {
             return true;
