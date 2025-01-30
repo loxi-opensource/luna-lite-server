@@ -2,12 +2,14 @@
 
 namespace App\Api\Logic;
 
+use App\Adminapi\Logic\Channel\MnpSettingsLogic;
 use App\Common\Logic\BaseLogic;
 use App\Common\Model\Article\Article;
 use App\Common\Model\Decorate\DecoratePage;
 use App\Common\Model\Decorate\DecorateTabbar;
 use App\Common\Service\ConfigService;
 use App\Common\Service\FileService;
+use Illuminate\Support\Arr;
 
 class IndexLogic extends BaseLogic
 {
@@ -112,6 +114,12 @@ class IndexLogic extends BaseLogic
         // 备案信息
         $copyright = ConfigService::get('copyright', 'config', []);
 
+        // 小程序相关
+        $mnpSetting = (new MnpSettingsLogic())->getConfig();
+        $mnp = [
+          'contact_qr_code' =>  Arr::get($mnpSetting, 'qr_code')
+        ];
+
         return [
             'domain' => FileService::getFileUrl(),
             'style' => $style,
@@ -121,6 +129,7 @@ class IndexLogic extends BaseLogic
             'webPage' => $webPage,
             'version' => config('project.version'),
             'copyright' => $copyright,
+            'mnp' => $mnp,
         ];
     }
 

@@ -17,7 +17,7 @@ class MnpSettingsLogic extends BaseLogic
     public function getConfig()
     {
         $domainName = $_SERVER['SERVER_NAME'];
-        $qrCode = ConfigService::get('mnp_setting', 'qr_code', '');
+        $qrCode = ConfigService::get('mnp_setting', 'qr_code', ConfigService::get('website', 'pc_logo'));
         $qrCode = empty($qrCode) ? $qrCode : FileService::getFileUrl($qrCode);
         $config = [
             'name' => ConfigService::get('mnp_setting', 'name', ''),
