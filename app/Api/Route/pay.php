@@ -10,4 +10,5 @@ Route::controller(PayController::class)->group(function () {
     Route::post('/pay/notifyMnp', 'notifyMnp')->name('pay.notifyMnp');
     Route::post('/pay/notifyOa', 'notifyOa')->name('pay.notifyOa');
     Route::post('/pay/aliNotify', 'aliNotify')->name('pay.aliNotify');
+    Route::post('/pay/useCardCode', 'useCardCode');
 });

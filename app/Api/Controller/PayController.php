@@ -96,4 +96,12 @@ class PayController extends BaseApiController
         }
     }
 
+    /**
+     * @notes 使用兑换码
+     */
+    public function useCardCode()
+    {
+        return $this->fail("功能未开通！请联系管理员购买高级版授权");
+    }
+
 }
